@@ -1,0 +1,52 @@
+{
+  "name": "navigator-sea-land",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Navigator Sea Land Limited \u2014 corporate website, shipment tracking portal and operations admin panel.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset --force && npm run db:seed",
+    "setup": "prisma generate && prisma migrate deploy && npm run db:seed",
+    "test": "tsx --conditions=react-server --test tests/*.test.ts",
+    "db:check-rls": "tsx --conditions=react-server scripts/check-rls.ts",
+    "supabase:setup": "tsx --conditions=react-server scripts/supabase-setup.ts",
+    "db:migrate": "prisma migrate deploy",
+    "db:connect": "tsx --conditions=react-server scripts/connect-supabase.ts"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "@supabase/supabase-js": "^2.116.0",
+    "bcryptjs": "^2.4.3",
+    "exceljs": "^4.4.0",
+    "jose": "^5.9.6",
+    "next": "^15.1.3",
+    "nodemailer": "^6.9.16",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "server-only": "^0.0.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.2",
+    "@types/nodemailer": "^6.4.17",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "pg": "^8.23.0",
+    "prisma": "^6.1.0",
+    "tailwindcss": "^4.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
