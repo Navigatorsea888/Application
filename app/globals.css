@@ -173,6 +173,13 @@
     transform: none;
     transition: opacity 450ms ease-out, transform 450ms ease-out;
   }
+  /* CSS-only safety net: if the observer never marks an element visible
+     (script error, unsupported browser quirk), it fades in on its own after
+     2.5 s. Content can be un-animated; it can never be invisible. */
+  html.js .reveal:not(.is-visible) { animation: reveal-fallback 400ms ease-out 2.5s forwards; }
+  @keyframes reveal-fallback {
+    to { opacity: 1; transform: none; }
+  }
   @media (prefers-reduced-motion: reduce) {
     html.js .reveal { opacity: 1; transform: none; }
   }
@@ -184,6 +191,11 @@
   html.js .reveal.is-visible .draw-path {
     stroke-dashoffset: 0;
     transition: stroke-dashoffset 1600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* Same safety net for the drawn routes. */
+  html.js .reveal:not(.is-visible) .draw-path { animation: draw-fallback 1600ms ease-out 2.5s forwards; }
+  @keyframes draw-fallback {
+    to { stroke-dashoffset: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     html.js .reveal .draw-path { stroke-dashoffset: 0; }

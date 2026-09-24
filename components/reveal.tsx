@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 /**
@@ -7,10 +8,21 @@ import { useEffect } from "react";
  *
  * The `js` class on <html> is what switches the initial hidden state on, so
  * with JavaScript disabled or the script still loading every element renders
- * fully visible. Elements are unobserved after revealing, and the whole effect
- * is disabled under prefers-reduced-motion by the stylesheet.
+ * fully visible. Three safeguards make sure nothing can stay hidden:
+ *
+ *  - the scan re-runs on every route change, so pages reached by in-site
+ *    navigation are observed too (the layout, and therefore this component,
+ *    persists across navigations);
+ *  - a MutationObserver picks up `.reveal` elements added after the scan;
+ *  - a timer reveals anything the IntersectionObserver has not reached within
+ *    two seconds, so a missed callback degrades to "no animation", never to
+ *    "invisible content".
+ *
+ * The whole effect is disabled under prefers-reduced-motion by the stylesheet.
  */
 export function RevealProvider() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const root = document.documentElement;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -27,16 +39,41 @@ export function RevealProvider() {
           }
         }
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0 },
     );
 
-    for (const element of document.querySelectorAll(".reveal")) observer.observe(element);
+    const observe = (scope: ParentNode) => {
+      const nodes = scope.querySelectorAll<HTMLElement>(".reveal:not(.is-visible)");
+      for (const element of nodes) observer.observe(element);
+      if (scope instanceof HTMLElement && scope.classList.contains("reveal") && !scope.classList.contains("is-visible")) {
+        observer.observe(scope);
+      }
+    };
+
+    observe(document.body);
+
+    const mutations = new MutationObserver((records) => {
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (node instanceof HTMLElement) observe(node);
+        }
+      }
+    });
+    mutations.observe(document.body, { childList: true, subtree: true });
+
+    const revealAll = () => {
+      for (const element of document.querySelectorAll(".reveal:not(.is-visible)")) element.classList.add("is-visible");
+    };
+    const fallback = window.setTimeout(revealAll, 2000);
 
     return () => {
+      window.clearTimeout(fallback);
+      mutations.disconnect();
       observer.disconnect();
-      root.classList.remove("js");
+      // Never leave hidden elements behind when the observer goes away.
+      revealAll();
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }
