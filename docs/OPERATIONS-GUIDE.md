@@ -207,6 +207,17 @@ The quote requests page has its own export.
 In review → Quoted → Won or Lost. Use the internal notes box for rate assumptions
 and what is outstanding; it is never shown to the client.
 
+The form walks the visitor through seven steps, so a request now also carries the
+service line they picked (shown as a pill next to the reference), an HS code, weight
+per piece, special-requirement flags (out-of-gauge, dangerous goods with the UN
+number, temperature-controlled, liquid in bulk, insurance), a cargo-ready date, the
+contact's position and preferred language. Dimensions are entered in metres on the
+form and shown in centimetres here, the same as shipments. Visitors can attach
+drawings, packing lists, SDS and photos (up to 10 files, 20 MB in total); they are
+listed on the request and open in a new tab. Attachments are internal only — the
+link works only while you are signed in — and they are included in the Excel export
+as a count.
+
 **Enquiries** are messages from the tracking page and the contact form. Where a
 client raised it from a shipment, the Tracking ID is shown and links straight to the
 file. Mark them In progress and Resolved so your colleague does not answer the same

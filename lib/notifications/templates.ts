@@ -102,7 +102,7 @@ export function shipmentUpdateHtml(context: ShipmentNotificationContext): string
       <p style="margin:24px 0 0;color:#64748b;font-size:12px;line-height:1.6">Estimated dates are indicative. Multimodal and cross-border movements are subject to border, customs, vessel and wagon availability.</p>
     </td></tr>
     <tr><td style="padding:16px 28px;border-top:1px solid #e2e8f0;color:#94a3b8;font-size:11px">
-      Navigator Sea Land Limited &middot; Project Freight Forwarding &amp; Multimodal Logistics &middot; Almaty &middot; Atyrau &middot; Mumbai
+      Navigator Sea Land Limited &middot; Project Freight Forwarding &amp; Multimodal Logistics &middot; Almaty &middot; Atyrau
     </td></tr>
   </table>
 </body></html>`;

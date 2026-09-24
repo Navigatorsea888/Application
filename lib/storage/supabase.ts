@@ -135,10 +135,22 @@ export async function ensureBucket(): Promise<string> {
     return `Bucket "${name}" already exists and is private.`;
   }
 
+  // Sized for the wider of the two upload paths (quote attachments: 20 MB,
+  // spreadsheets and Word documents). A bucket created by an earlier version
+  // keeps its old limits — raise them in the dashboard if quote uploads fail.
   const { error } = await supabase.storage.createBucket(name, {
     public: false,
-    fileSizeLimit: 10 * 1024 * 1024,
-    allowedMimeTypes: ["image/jpeg", "image/png", "image/webp", "image/heic", "application/pdf"],
+    fileSizeLimit: 20 * 1024 * 1024,
+    allowedMimeTypes: [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "application/pdf",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ],
   });
   if (error) throw new Error(`Could not create bucket "${name}": ${error.message}`);
 

@@ -65,6 +65,7 @@ repository.
 
 ### Try it
 
+- Browse the site at <http://localhost:3000> — gold review boxes mark every fact still to confirm
 - Sign in at <http://localhost:3000/admin/login>
 - Track `NSL-2026-0001` with `TSP-2026-114` (or the consignee email)
 - Track `NSL-2026-0007` — public access is on, so the Tracking ID alone works
@@ -79,7 +80,7 @@ repository.
 | `npm run dev` | Development server |
 | `npm run build` | Production build (runs `prisma generate` first) |
 | `npm start` | Serve the production build |
-| `npm test` | Test suite — 51 tests over access control, timeline, uploads and validation |
+| `npm test` | Test suite — 76 tests over access control, timeline, uploads, tools and validation |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run setup` | Generate client, run migrations, seed |
 | `npm run db:migrate` | Apply pending migrations (`prisma migrate deploy`) |
@@ -96,22 +97,49 @@ repository.
 
 ```
 app/
-  (site)/          Public marketing site and /track
+  (site)/          Public marketing site (built to the v2.0 copy deck) and /track
+    services/[slug]  industries/[slug]  corridors/[slug]   data-driven templates
+    request-a-quote  contact  careers  insights  insights/tools  projects  faq
   admin/
     login/         Unguarded
     (panel)/       Everything behind the session guard
   api/admin/export Excel endpoints
-components/        Shared UI; components/admin/ for panel-only
+  api/files        Serves checkpoint and quote attachments with access checks
+components/
+  site/            Header (mega-menu), footer, hero banner, section renderer,
+                   corridor map, FAQ, breadcrumbs, JSON-LD, review notes
+  quote/           Seven-step quote wizard
+  tools/           CBM calculator, OOG pre-check, Incoterms guide, equipment specs
+  admin/           Panel-only components
 lib/
-  constants.ts     Status vocabulary, roles, modes, corridors
+  content/         ALL site copy, one module per family (company, services,
+                   industries, corridors, projects, insights, faqs, navigation)
+  tools/           Pure maths and data behind components/tools
+  constants.ts     Status vocabulary, roles, modes, corridors, quote service types
   shipments.ts     Service layer — the only module that queries shipments
   auth.ts          Session cookie, password hashing, role checks
   validation.ts    Zod schemas for every form
+  uploads.ts       Attachment validation and storage keys (checkpoints and quotes)
   notifications/   Channel interface + email / WhatsApp / SMS adapters
-  content.ts       All site copy
-prisma/            Schema and seed
+prisma/            Schema, migrations and seed
 tests/             Test suite
+docs/              Go-live checklist, operations guide, design specs
 ```
+
+### Site content and the `[CONFIRM]` convention
+
+Every word on the public site comes from `lib/content/`, transcribed from the
+**Website Content — Final Copy Deck v2.0**. Facts the deck marks `[CONFIRM]`
+carry the `CONFIRM` marker in the content modules, or belong to sections that
+stay hidden until filled in (key-figure counters, testimonials, accreditation
+logos, leadership, project gallery). On development and preview builds a gold
+"Confirm before launch" box appears where each item sits on the page; production
+never renders the marker or the boxes. `grep -rn CONFIRM lib/content/` lists what
+is outstanding, and `docs/GO-LIVE-CHECKLIST.md` walks through it.
+
+Service, industry and corridor pages are generated from typed content blocks by
+`components/site/section-renderer.tsx`, so adding a page is adding an entry to
+the relevant content array.
 
 **Stack:** Next.js 15 (App Router) · TypeScript · Tailwind CSS 4 · Prisma ·
 **Supabase** (Postgres + Storage) · Zod · ExcelJS · Nodemailer. No UI component

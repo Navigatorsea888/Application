@@ -539,6 +539,57 @@ describe("Validation", () => {
     assert.equal(quoteRequestSchema.safeParse({ ...base, email: "a@b.com" }).success, true);
   });
 
+  const validQuote = {
+    companyName: "Co",
+    contactPerson: "P",
+    email: "a@b.com",
+    originCity: "A",
+    originCountry: "X",
+    destinationCity: "B",
+    destinationCountry: "Y",
+    cargoDescription: "Cargo",
+  };
+
+  test("a quote request only accepts a listed service type", () => {
+    assert.equal(quoteRequestSchema.safeParse({ ...validQuote, serviceType: "TELEPORT" }).success, false);
+    assert.equal(quoteRequestSchema.safeParse({ ...validQuote, serviceType: "HEAVY_HAUL" }).success, true);
+    // An unticked radio group arrives as nothing at all, which is allowed.
+    assert.equal(quoteRequestSchema.safeParse({ ...validQuote, serviceType: "" }).success, true);
+  });
+
+  test("dangerous goods need a UN number", () => {
+    const withoutUn = quoteRequestSchema.safeParse({ ...validQuote, isDangerousGoods: "on" });
+    assert.equal(withoutUn.success, false);
+    assert.ok(withoutUn.error!.issues.some((i) => i.path.includes("unNumber")));
+
+    const badUn = quoteRequestSchema.safeParse({ ...validQuote, isDangerousGoods: "on", unNumber: "12" });
+    assert.equal(badUn.success, false);
+
+    const withUn = quoteRequestSchema.safeParse({ ...validQuote, isDangerousGoods: "on", unNumber: "UN 1203" });
+    assert.equal(withUn.success, true);
+  });
+
+  test("the UN number is normalised however it was typed", () => {
+    for (const typed of ["un1234", "UN 1234", "1234", " Un1234 "]) {
+      const result = quoteRequestSchema.safeParse({ ...validQuote, isDangerousGoods: "on", unNumber: typed });
+      assert.equal(result.success, true, `should accept ${JSON.stringify(typed)}`);
+      assert.equal(result.data!.unNumber, "UN1234");
+    }
+  });
+
+  test("dimensions in metres are accepted alongside the legacy centimetre fields", () => {
+    const metres = quoteRequestSchema.safeParse({ ...validQuote, lengthM: "12.5", widthM: "3.2", heightM: "" });
+    assert.equal(metres.success, true);
+    assert.equal(metres.data!.lengthM, 12.5);
+    assert.equal(metres.data!.widthM, 3.2);
+    assert.equal(metres.data!.heightM, undefined, "blank must not become 0 m");
+
+    assert.equal(quoteRequestSchema.safeParse({ ...validQuote, lengthM: "-1" }).success, false);
+    assert.equal(quoteRequestSchema.safeParse({ ...validQuote, lengthCm: "1250" }).success, true);
+    assert.equal(quoteRequestSchema.safeParse({ ...validQuote, preferredLanguage: "DE" }).success, false);
+    assert.equal(quoteRequestSchema.safeParse({ ...validQuote, preferredLanguage: "KZ" }).success, true);
+  });
+
   test("notification emails must be a valid comma-separated list", () => {
     assert.equal(
       shipmentSchema.safeParse({ ...validShipment, notifyEmails: "a@b.com, c@d.com" }).success,

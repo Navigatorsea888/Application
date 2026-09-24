@@ -7,14 +7,18 @@ import { SHIPMENT_STATUSES, isShipmentStatus, statusLabel } from "@/lib/constant
    Deliberately plain: no runtime CSS-in-JS, no variant library.
 ------------------------------------------------------------------------- */
 
-type ButtonVariant = "primary" | "secondary" | "onDark" | "ghost" | "danger";
+type ButtonVariant = "primary" | "gold" | "secondary" | "onDark" | "ghost" | "danger";
 type ButtonSize = "sm" | "md" | "lg";
 
 const BUTTON_BASE =
   "inline-flex cursor-pointer items-center justify-center gap-2 rounded-md font-[family-name:var(--font-display)] font-medium transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-55";
 
 const BUTTON_VARIANTS: Record<ButtonVariant, string> = {
+  // Teal: secondary action per the brand deck, and the default in the admin.
   primary: "bg-accent-600 text-white hover:bg-accent-700",
+  // Gold: the primary call to action ("Request a Quote"). Navy text, never
+  // white — white on gold fails WCAG contrast.
+  gold: "bg-gold-500 text-ink-900 hover:bg-gold-600",
   secondary: "border border-ink-300 bg-white text-ink-800 hover:bg-ink-100 hover:border-ink-400",
   // For use on the navy hero. A separate variant rather than utility overrides:
   // Tailwind resolves conflicting classes by stylesheet order, not by the order
@@ -57,7 +61,7 @@ export function ButtonLink({
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`rounded-lg border border-ink-200 bg-white ${className}`}>{children}</div>
+    <div className={`relative surface ${className}`}>{children}</div>
   );
 }
 

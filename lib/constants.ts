@@ -198,6 +198,32 @@ export const PACKAGE_TYPES = [
   "Breakbulk",
 ] as const;
 
+/**
+ * Service lines a visitor can pick on step 1 of the public "Request a Quote"
+ * form. Keys are stored on QuoteRequest.serviceType; labels are display only.
+ */
+export const QUOTE_SERVICE_TYPES = {
+  PROJECT: "Project Logistics & Heavy Lift",
+  HEAVY_HAUL: "Heavy Haul & Over-Dimensional Trucking",
+  BULK_LIQUID: "Bulk Liquid Transportation",
+  RAIL: "Rail Freight",
+  ROAD: "Road Freight",
+  OCEAN_CASPIAN: "Ocean & Caspian Freight",
+  AIR: "Air Freight",
+  CUSTOMS: "Customs & Trade Compliance",
+  WAREHOUSING: "Warehousing & Distribution",
+  NOT_SURE: "Not sure yet",
+} as const;
+export type QuoteServiceType = keyof typeof QUOTE_SERVICE_TYPES;
+
+/** Preferred correspondence language on a quote request. */
+export const LANGUAGES = {
+  EN: "English",
+  RU: "Russian",
+  KZ: "Kazakh",
+} as const;
+export type Language = keyof typeof LANGUAGES;
+
 export const INCOTERMS = [
   "EXW", "FCA", "FAS", "FOB", "CFR", "CIF", "CPT", "CIP", "DAP", "DPU", "DDP",
 ] as const;

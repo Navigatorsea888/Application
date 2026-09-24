@@ -1,5 +1,7 @@
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site/site-header";
+import { SiteFooter } from "@/components/site/site-footer";
+import { MobileActionBar, WhatsAppFloat } from "@/components/site/mobile-action-bar";
+import { JsonLd, organizationJsonLd } from "@/components/site/json-ld";
 import { RevealProvider } from "@/components/reveal";
 
 /**
@@ -15,9 +17,12 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       >
         Skip to content
       </a>
+      <JsonLd data={organizationJsonLd()} />
       <SiteHeader />
       <main id="main">{children}</main>
       <SiteFooter />
+      <MobileActionBar />
+      <WhatsAppFloat />
       <RevealProvider />
     </>
   );

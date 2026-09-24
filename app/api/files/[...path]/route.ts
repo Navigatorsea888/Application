@@ -5,15 +5,44 @@ import { FILE_ROUTE_PREFIX, readUpload } from "@/lib/uploads";
 
 export const dynamic = "force-dynamic";
 
+interface ServableAttachment {
+  storagePath: string;
+  fileName: string;
+  mimeType: string;
+  isClientVisible: boolean;
+}
+
 /**
- * Serves checkpoint attachments from whichever storage driver is configured.
+ * A checkpoint attachment first; failing that, a quote attachment. Quote
+ * attachments carry no visibility flag because they are never client-visible —
+ * they were uploaded by a prospect, not released by operations.
+ */
+async function findAttachment(storagePath: string): Promise<ServableAttachment | null> {
+  const checkpointFile = await prisma.attachment.findFirst({
+    where: { storagePath },
+    select: { storagePath: true, fileName: true, mimeType: true, isClientVisible: true },
+  });
+  if (checkpointFile) return checkpointFile;
+
+  const quoteFile = await prisma.quoteAttachment.findFirst({
+    where: { storagePath },
+    select: { storagePath: true, fileName: true, mimeType: true },
+  });
+  return quoteFile ? { ...quoteFile, isClientVisible: false } : null;
+}
+
+/**
+ * Serves checkpoint and quote-request attachments from whichever storage
+ * driver is configured.
  *
  * Access is decided by the attachment record, not by the store:
  *
- *  - Client-visible attachments are served to anyone holding the URL. The URL
- *    contains a random UUID and is only ever published on a tracking page that
- *    already required the Tracking ID plus a second identifier to reach.
- *  - Internal-only attachments require a signed-in staff session.
+ *  - Client-visible checkpoint attachments are served to anyone holding the
+ *    URL. The URL contains a random UUID and is only ever published on a
+ *    tracking page that already required the Tracking ID plus a second
+ *    identifier to reach.
+ *  - Internal-only checkpoint attachments require a signed-in staff session.
+ *  - Quote attachments are always internal: a staff session is required.
  *
  * Bytes are streamed through this route rather than handed out as a signed
  * storage URL, so that check stays in the request path for every fetch. A
@@ -33,10 +62,7 @@ export async function GET(
   // cannot be used to discover which attachments exist.
   const notFound = NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const attachment = await prisma.attachment.findFirst({
-    where: { storagePath },
-    select: { storagePath: true, fileName: true, mimeType: true, isClientVisible: true },
-  });
+  const attachment = await findAttachment(storagePath);
   if (!attachment) return notFound;
 
   if (!attachment.isClientVisible && !(await getSessionUser())) return notFound;

@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import { submitContact, type FormState } from "@/app/(site)/quote/actions";
+import { submitContact, type FormState } from "@/app/(site)/request-a-quote/actions";
 import { Alert } from "./ui";
 import { Field, Textarea, TextInput } from "./form-fields";
 

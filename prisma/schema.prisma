@@ -254,13 +254,47 @@ model QuoteRequest {
   incoterms        String?
   additionalInfo   String?
 
+  // --- Added by the seven-step form (all optional, so older rows are valid) --
+  /// Key from lib/constants.ts QUOTE_SERVICE_TYPES.
+  serviceType             String?
+  hsCode                  String?
+  weightPerPieceKg        Float?
+  isDangerousGoods        Boolean   @default(false)
+  /// Normalised to `UN1234` when dangerous goods are declared.
+  unNumber                String?
+  isTemperatureControlled Boolean   @default(false)
+  isBulkLiquid            Boolean   @default(false)
+  insuranceRequired       Boolean   @default(false)
+  cargoReadyDate          DateTime?
+  contactPosition         String?
+  /// EN | RU | KZ — see lib/constants.ts LANGUAGES.
+  preferredLanguage       String?
+
   /// NEW | IN_REVIEW | QUOTED | WON | LOST | ARCHIVED
   status        String   @default("NEW")
   internalNotes String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  attachments QuoteAttachment[]
+
   @@index([status, createdAt])
+}
+
+/// A drawing, packing list, SDS or photo uploaded with a quote request.
+/// Always internal: never served without a staff session.
+model QuoteAttachment {
+  id             String       @id @default(cuid())
+  quoteRequestId String
+  quoteRequest   QuoteRequest @relation(fields: [quoteRequestId], references: [id], onDelete: Cascade)
+
+  fileName    String
+  storagePath String
+  mimeType    String
+  sizeBytes   Int
+  createdAt   DateTime @default(now())
+
+  @@index([quoteRequestId])
 }
 
 /// "Contact us about this shipment" message raised from the tracking page.

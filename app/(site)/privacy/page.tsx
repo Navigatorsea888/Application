@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Alert } from "@/components/ui";
-import { PageHero } from "@/components/page-hero";
-import { company } from "@/lib/content";
+import { PageHero } from "@/components/site/page-hero";
+import { company, confirmedOr } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy",
+  title: "Privacy Policy | Navigator Sea Land Limited",
   description: "How Navigator Sea Land Limited collects, uses and protects personal data.",
 };
 
@@ -19,21 +19,20 @@ export default function PrivacyPage() {
         <div className="mx-auto max-w-3xl">
           <Alert tone="warning" title="Review required before publication">
             This policy is a working draft prepared for a logistics operator handling personal data across
-            Kazakhstan, India and, where clients are EU-based, the EU. It has not been reviewed by a lawyer.
-            Have qualified counsel confirm it against the Kazakh Personal Data Law, India&rsquo;s Digital Personal
-            Data Protection Act and the GDPR before it is published, and complete every bracketed item.
+            Kazakhstan and, where clients are EU-based, the EU. It has not been reviewed by a lawyer.
+            Have qualified counsel confirm it against the Kazakh Personal Data Law and the GDPR before it is published, and complete every bracketed item.
           </Alert>
 
           <div className="prose-body mt-10 space-y-8">
             <Section title="1. Who we are">
               <p>
                 {company.legalName} (&ldquo;Navigator Sea Land&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is a
-                project freight forwarder with offices in Almaty and Atyrau, Kazakhstan, and Mumbai, India. We are
+                project freight forwarder with offices in Almaty and Atyrau, Kazakhstan. We are
                 the controller of the personal data described in this policy.
               </p>
               <p>
                 Data protection enquiries: <a href={`mailto:${company.email}`} className="text-accent-600 underline underline-offset-2">{company.email}</a>.
-                Registered address and company number: {company.registration}.
+                Registered address and company number: {confirmedOr(company.registration, "available on request")}.
               </p>
             </Section>
 
@@ -99,7 +98,7 @@ export default function PrivacyPage() {
               <p>
                 Enquiries and quotations that do not become bookings: [BRACKETED: state period, commonly 24
                 months]. Transport, customs and accounting records: for the statutory retention period applicable
-                in the jurisdiction concerned [BRACKETED: confirm periods for Kazakhstan and India]. Tracking form
+                in the jurisdiction concerned [BRACKETED: confirm periods for Kazakhstan]. Tracking form
                 logs: 24 hours, after which they are deleted automatically.
               </p>
             </Section>

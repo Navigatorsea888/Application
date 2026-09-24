@@ -78,7 +78,7 @@ export default async function ShipmentPrintPage({
             Project Freight Forwarding &amp; Multimodal Logistics
           </p>
           <p className="mt-2 text-xs text-ink-600">
-            Almaty · Atyrau · Mumbai &nbsp;|&nbsp; {company.email}
+            Almaty · Atyrau &nbsp;|&nbsp; {company.email}
           </p>
         </div>
         <div className="text-right">

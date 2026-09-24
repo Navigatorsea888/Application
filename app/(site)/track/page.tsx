@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { Alert, Card, DataRow, Pill, StatusBadge } from "@/components/ui";
-import { PageHero } from "@/components/page-hero";
+import { PageHero } from "@/components/site/page-hero";
 import { TrackingTimeline } from "@/components/tracking-timeline";
 import { EnquiryForm } from "@/components/enquiry-form";
 import { IconAlert, IconPackage, IconSearch, MODE_ICONS } from "@/components/icons";
@@ -12,7 +12,7 @@ import { CORRIDORS, MODES, parseList } from "@/lib/constants";
 import { formatDate, formatRoute, formatWeight } from "@/lib/format";
 
 export const metadata: Metadata = {
-  title: "Track Shipment",
+  title: "Track Shipment | Navigator Sea Land Limited",
   description:
     "Track a Navigator Sea Land shipment. Enter your Tracking ID with the consignee email or contract reference to see the full checkpoint timeline.",
   robots: { index: true, follow: true },

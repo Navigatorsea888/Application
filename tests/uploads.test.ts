@@ -17,7 +17,9 @@ import { join } from "node:path";
 import {
   ALLOWED_MIME_TYPES,
   FILE_ROUTE_PREFIX,
+  MAX_QUOTE_ATTACHMENT_BYTES,
   MAX_UPLOAD_BYTES,
+  QUOTE_ALLOWED_MIME_TYPES,
   UploadError,
   readUpload,
   removeUpload,
@@ -26,7 +28,10 @@ import {
 } from "../lib/uploads";
 
 const SHIPMENT_ID = "test-uploads-fixture";
+const QUOTE_SCOPE = "quote-test-uploads-fixture";
 const stored: string[] = [];
+
+const XLSX_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 /** A one-pixel PNG. */
 const PNG_BYTES = Buffer.from(
@@ -43,10 +48,9 @@ after(async () => {
 
   // Remove the directory too, so repeated runs do not leave empty fixture
   // folders behind in storage/.
-  await rm(join(process.cwd(), "storage", "uploads", SHIPMENT_ID), {
-    recursive: true,
-    force: true,
-  });
+  for (const scope of [SHIPMENT_ID, QUOTE_SCOPE]) {
+    await rm(join(process.cwd(), "storage", "uploads", scope), { recursive: true, force: true });
+  }
 });
 
 describe("Uploads", () => {
@@ -150,5 +154,33 @@ describe("Uploads", () => {
   test("rejects a shipment reference that is not a plain id", async () => {
     await assert.rejects(() => storeUpload(pngFile(), "../../etc"), UploadError);
     await assert.rejects(() => storeUpload(pngFile(), "a/b"), UploadError);
+  });
+
+  test("a spreadsheet is accepted with the quote allowlist and rejected with the default one", async () => {
+    const xlsx = new File([new Uint8Array([0x50, 0x4b, 0x03, 0x04])], "packing-list.xlsx", { type: XLSX_TYPE });
+
+    // Checkpoint attachments keep their narrow allowlist: operations attach
+    // photographs and PDFs, and widening it there was never asked for.
+    await assert.rejects(() => storeUpload(xlsx, SHIPMENT_ID), UploadError);
+
+    const result = await storeUpload(xlsx, QUOTE_SCOPE, {
+      allowed: QUOTE_ALLOWED_MIME_TYPES,
+      maxBytes: MAX_QUOTE_ATTACHMENT_BYTES,
+    });
+    stored.push(result.storagePath);
+    assert.match(result.storagePath, new RegExp(`^${FILE_ROUTE_PREFIX}${QUOTE_SCOPE}/[0-9a-f-]{36}\\.xlsx$`));
+    assert.equal(result.mimeType, XLSX_TYPE);
+
+    // The generated key must round-trip through the same shape check.
+    assert.equal(storageKeyFor(result.storagePath), result.storagePath.slice(FILE_ROUTE_PREFIX.length));
+    assert.ok(await readUpload(result.storagePath), "the stored spreadsheet should read back");
+  });
+
+  test("the quote allowlist is a superset of the checkpoint one and still excludes SVG", () => {
+    for (const type of Object.keys(ALLOWED_MIME_TYPES)) {
+      assert.ok(QUOTE_ALLOWED_MIME_TYPES[type], `${type} should also be attachable to a quote`);
+    }
+    assert.equal(QUOTE_ALLOWED_MIME_TYPES["image/svg+xml"], undefined);
+    assert.equal(MAX_QUOTE_ATTACHMENT_BYTES, 20 * 1024 * 1024);
   });
 });

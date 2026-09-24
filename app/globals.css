@@ -1,32 +1,49 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Navigator Sea Land design tokens.
-   Flat, corporate, high-contrast. Navy carries authority, the blue accent
-   carries action, and amber is reserved exclusively for exception states so
-   that a delayed shipment is never mistaken for a decorative highlight.
+   Navigator Sea Land design tokens — brand palette from the v2.0 copy deck.
+
+   Navy #0B2545 carries authority (headers, hero overlays), teal #13807E carries
+   secondary actions, icons and links, gold #C9A227 is the primary call to
+   action, light teal #EAF4F4 is the alternating section band, and charcoal
+   #2B2F36 is body text.
+
+   The token names (ink-*, accent-*) predate the palette and are kept so the
+   admin panel and tracking portal restyle with the site. Amber `signal-*` is
+   reserved for shipment exception states and is deliberately not gold: a
+   delayed shipment must never look like a call to action.
 --------------------------------------------------------------------------- */
 
 @theme {
-  --color-ink-50: #f8fafc;
-  --color-ink-100: #f1f5f9;
-  --color-ink-200: #e2e8f0;
-  --color-ink-300: #cbd5e1;
-  --color-ink-400: #94a3b8;
-  --color-ink-500: #64748b;
-  --color-ink-600: #475569;
-  --color-ink-700: #334155;
-  --color-ink-800: #1e293b;
-  --color-ink-900: #0f172a;
-  --color-ink-950: #020617;
+  /* Neutral scale that lands on navy at the dark end and charcoal for text. */
+  --color-ink-50: #f6f8fb;
+  --color-ink-100: #eef2f7;
+  --color-ink-200: #dfe5ee;
+  --color-ink-300: #c5cedb;
+  --color-ink-400: #94a0b4;
+  --color-ink-500: #6b7689;
+  --color-ink-600: #4b5565;
+  --color-ink-700: #2b2f36;
+  --color-ink-800: #142f5a;
+  --color-ink-900: #0b2545;
+  --color-ink-950: #071831;
 
-  --color-accent-50: #f0f9ff;
-  --color-accent-100: #e0f2fe;
-  --color-accent-200: #bae6fd;
-  --color-accent-400: #38bdf8;
-  --color-accent-600: #0369a1;
-  --color-accent-700: #075985;
-  --color-accent-800: #0c4a6e;
+  /* Teal. accent-600 on white is 4.8:1; use accent-700 for small link text. */
+  --color-accent-50: #eaf4f4;
+  --color-accent-100: #d5e9e8;
+  --color-accent-200: #aad3d1;
+  --color-accent-400: #3f9f9c;
+  --color-accent-600: #13807e;
+  --color-accent-700: #0f6866;
+  --color-accent-800: #0b4f4d;
+
+  /* Gold. Only ever with navy text — white on gold fails contrast. */
+  --color-gold-50: #fbf6e4;
+  --color-gold-100: #f5eac2;
+  --color-gold-300: #e3cb6e;
+  --color-gold-500: #c9a227;
+  --color-gold-600: #b08e1f;
+  --color-gold-700: #8e7218;
 
   --color-signal-50: #fffbeb;
   --color-signal-100: #fef3c7;
@@ -44,9 +61,12 @@
   --color-danger-600: #dc2626;
   --color-danger-700: #b91c1c;
 
-  --font-display: "Lexend", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-sans: "Source Sans 3", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+
+  --shadow-card: 0 1px 2px rgb(11 37 69 / 0.06), 0 4px 16px -4px rgb(11 37 69 / 0.08);
+  --shadow-card-hover: 0 2px 4px rgb(11 37 69 / 0.08), 0 12px 28px -8px rgb(11 37 69 / 0.16);
 }
 
 @layer base {
@@ -65,12 +85,16 @@
   }
 
   body {
-    background-color: var(--color-ink-50);
-    color: var(--color-ink-900);
+    background-color: #fff;
+    color: var(--color-ink-700);
     font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+  }
+
+  @media (min-width: 1024px) {
+    body { font-size: 17px; }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -96,11 +120,12 @@
 }
 
 @layer components {
+  /* Deck 11.3: max content width 1,200 px. */
   .container-page {
     width: 100%;
     margin-inline: auto;
     padding-inline: 1rem;
-    max-width: 80rem;
+    max-width: 75rem;
   }
   @media (min-width: 640px) { .container-page { padding-inline: 1.5rem; } }
   @media (min-width: 1024px) { .container-page { padding-inline: 2rem; } }
@@ -111,11 +136,31 @@
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-accent-600);
+    color: var(--color-accent-700);
   }
 
   .prose-body p { margin-block: 0 1rem; color: var(--color-ink-700); }
   .prose-body p:last-child { margin-bottom: 0; }
+  .prose-body a { color: var(--color-accent-700); text-decoration: underline; text-underline-offset: 2px; }
+  .prose-body a:hover { color: var(--color-accent-800); }
+
+  /* Alternating section band. */
+  .band-alt { background-color: var(--color-accent-50); }
+
+  /* Card surface per deck: 8 px radius, subtle shadow. */
+  .surface {
+    background: #fff;
+    border: 1px solid var(--color-ink-200);
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow-card);
+  }
+  .surface-hover {
+    transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms ease;
+  }
+  .surface-hover:hover {
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-accent-200);
+  }
 }
 
 /* Subtle scroll reveal. Purely additive: content is fully visible without JS
@@ -126,10 +171,22 @@
   html.js .reveal.is-visible {
     opacity: 1;
     transform: none;
-    transition: opacity 400ms ease-out, transform 400ms ease-out;
+    transition: opacity 450ms ease-out, transform 450ms ease-out;
   }
   @media (prefers-reduced-motion: reduce) {
     html.js .reveal { opacity: 1; transform: none; }
+  }
+
+  /* Corridor map: routes draw themselves on scroll. Paths carry
+     pathLength="1" so the dash maths is unit-based. */
+  .draw-path { stroke-dasharray: 1; stroke-dashoffset: 0; }
+  html.js .reveal .draw-path { stroke-dashoffset: 1; }
+  html.js .reveal.is-visible .draw-path {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html.js .reveal .draw-path { stroke-dashoffset: 0; }
   }
 }
 

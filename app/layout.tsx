@@ -1,43 +1,34 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { company } from "@/lib/content";
+import { company, homeMeta } from "@/lib/content";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: {
-    default: `${company.legalName} — ${company.tagline}`,
-    template: `%s | ${company.shortName}`,
-  },
-  description: company.descriptionShort,
-  keywords: [
-    "project cargo",
-    "heavy lift",
-    "out of gauge",
-    "OOG",
-    "freight forwarding",
-    "multimodal logistics",
-    "Middle Corridor",
-    "TITR",
-    "INSTC",
-    "China Land Bridge",
-    "Caspian",
-    "Kazakhstan",
-    "Almaty",
-    "Atyrau",
-  ],
+  metadataBase: new URL(siteUrl),
+  // Pages carry the full meta title from the copy deck (brand suffix
+  // included), so the template adds nothing.
+  title: { default: homeMeta.title, template: "%s" },
+  description: homeMeta.description,
+  keywords: homeMeta.keywords,
+  applicationName: company.legalName,
   openGraph: {
     type: "website",
     siteName: company.legalName,
-    title: `${company.legalName} — ${company.tagline}`,
-    description: company.descriptionShort,
+    title: homeMeta.title,
+    description: homeMeta.description,
+    locale: "en_GB",
   },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  // hreflang: RU and KZ versions follow (deck 11.2). Add them here when live.
+  alternates: { languages: { en: "/" } },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f172a",
+  themeColor: "#0b2545",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -46,9 +37,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* Montserrat for headings, Inter for body — both with Cyrillic subsets for the RU/KZ versions. */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
         />
       </head>
       <body>{children}</body>

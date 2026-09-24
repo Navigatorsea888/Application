@@ -1,248 +1,287 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { TrackWidget } from "@/components/track-widget";
-import { ButtonLink, Card, SectionHeading } from "@/components/ui";
-import { IconArrowRight, IconCheck, SERVICE_ICONS } from "@/components/icons";
-import { company, corridors, differentiators, offices, services } from "@/lib/content";
+import { Card } from "@/components/ui";
+import { ContentIcon, IconArrowRight } from "@/components/icons";
+import { HeroBanner } from "@/components/site/hero-banner";
+import { Band, CardGrid, CtaButton } from "@/components/site/section-renderer";
+import { ProcessSteps } from "@/components/site/process-steps";
+import { ClosingCta } from "@/components/site/closing-cta";
+import { ConfirmNote } from "@/components/site/confirm-note";
+import { Counter } from "@/components/site/counter";
+import { CorridorMap } from "@/components/site/corridor-map";
+import {
+  corridors,
+  homeCapabilities,
+  homeCorridorsIntro,
+  homeExperienceHeading,
+  homeHero,
+  homeIndustriesHeading,
+  homeIntro,
+  homeMeta,
+  homeUsps,
+  industries,
+  keyFigures,
+  processSteps,
+  publishedCaseStudies,
+  publishedInsights,
+  testimonials,
+  trustStrip,
+} from "@/lib/content";
+
+export const metadata: Metadata = {
+  title: homeMeta.title,
+  description: homeMeta.description,
+  keywords: homeMeta.keywords,
+  alternates: { canonical: "/" },
+};
 
 export default function HomePage() {
   return (
     <>
-      <Hero />
-      <CorridorStrip />
-      <ServicesPreview />
-      <WhyUs />
-      <CorridorsPreview />
-      <OfficesPreview />
-      <ClosingCta />
-    </>
-  );
-}
+      <HeroBanner hero={homeHero} size="large" eyebrow="Project Cargo · Heavy Haul · Multimodal" aside={<TrackWidget />} />
 
-function Hero() {
-  return (
-    <section className="relative overflow-hidden bg-ink-900">
-      {/* Decorative corridor lines. Purely atmospheric, hidden from assistive tech. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.15]">
-        <svg className="size-full" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" fill="none">
-          <path d="M-50 420 C 250 380, 400 250, 700 240 S 1050 180, 1250 120" stroke="#38bdf8" strokeWidth="1.5" />
-          <path d="M-50 480 C 200 460, 450 420, 650 350 S 980 300, 1250 250" stroke="#38bdf8" strokeWidth="1" opacity="0.6" />
-          <path d="M-50 340 C 300 320, 500 180, 820 190 S 1100 140, 1250 60" stroke="#38bdf8" strokeWidth="1" opacity="0.4" />
-          {[
-            [180, 404], [420, 268], [700, 240], [980, 178],
-            [300, 447], [650, 350], [900, 312],
-          ].map(([x, y]) => (
-            <circle key={`${x}-${y}`} cx={x} cy={y} r="4" fill="#38bdf8" />
+      {/* Trust strip */}
+      <section aria-label="At a glance" className="border-b border-ink-200 bg-white">
+        <div className="container-page grid gap-6 py-8 sm:grid-cols-2 lg:grid-cols-4">
+          {trustStrip.map((item) => (
+            <div key={item.title} className="flex gap-4 border-l-2 border-gold-500 pl-4">
+              <div>
+                <p className="font-[family-name:var(--font-display)] text-xl font-bold text-ink-900">{item.title}</p>
+                <p className="mt-1 text-sm leading-snug text-ink-600">{item.body}</p>
+              </div>
+            </div>
           ))}
-        </svg>
-      </div>
+        </div>
+      </section>
 
-      <div className="container-page relative py-20 lg:py-28">
-        <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
+      {/* Introduction */}
+      <Band alt={false}>
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] lg:gap-16">
           <div>
-            <p className="eyebrow text-accent-400">{company.strapline}</p>
-            <h1 className="mt-4 max-w-2xl text-3xl leading-[1.15] text-white sm:text-4xl lg:text-[2.875rem]">
-              Out-of-gauge and heavy-lift cargo across the Eurasian corridors.
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-300">
-              {company.descriptionLong}
-            </p>
-
-            <div className="mt-9 flex flex-wrap gap-3">
-              <ButtonLink href="/quote" size="lg">
-                Request a Quote
-                <IconArrowRight className="size-4" />
-              </ButtonLink>
-              <ButtonLink href="/services" size="lg" variant="onDark">
-                Our Services
-              </ButtonLink>
+            <p className="eyebrow">Who we are</p>
+            <h2 className="mt-3 text-2xl sm:text-3xl lg:text-[2.125rem]">{homeIntro.heading}</h2>
+            <div className="mt-8 hidden lg:block">
+              <CtaButton cta={homeIntro.cta} />
             </div>
-
-            <ul className="mt-10 flex flex-wrap gap-x-7 gap-y-3">
-              {["Project cargo management", "Route surveys & permits", "Customs across five republics"].map(
-                (item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-ink-300">
-                    <IconCheck className="size-4 shrink-0 text-accent-400" />
-                    {item}
-                  </li>
-                ),
-              )}
-            </ul>
           </div>
-
-          <div className="lg:pl-4">
-            <TrackWidget />
+          <div className="prose-body text-[1.0625rem] leading-relaxed">
+            {homeIntro.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 40)}>{paragraph}</p>
+            ))}
+            <div className="mt-8 lg:hidden">
+              <CtaButton cta={homeIntro.cta} />
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </Band>
 
-function CorridorStrip() {
-  return (
-    <section aria-label="Corridors served" className="border-b border-ink-200 bg-white">
-      <div className="container-page flex flex-wrap items-center justify-center gap-x-10 gap-y-4 py-6">
-        <span className="font-[family-name:var(--font-display)] text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink-600">
-          Corridors served
-        </span>
-        {corridors.map((corridor) => (
-          <Link
-            key={corridor.key}
-            href={`/corridors#${corridor.slug}`}
-            className="text-sm font-medium text-ink-600 transition-colors duration-150 hover:text-accent-600"
-          >
-            {corridor.title}
+      {/* Core capabilities */}
+      <Band alt>
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div className="max-w-2xl">
+            <p className="eyebrow">Core capabilities</p>
+            <h2 className="mt-3 text-2xl sm:text-3xl">What We Deliver</h2>
+          </div>
+          <Link href="/services" className="inline-flex items-center gap-2 text-sm font-medium text-accent-700 hover:underline">
+            All services
+            <IconArrowRight className="size-4" />
           </Link>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function ServicesPreview() {
-  return (
-    <section className="container-page py-20 lg:py-24">
-      <div className="flex flex-wrap items-end justify-between gap-6">
-        <SectionHeading
-          eyebrow="What we do"
-          title="Six services, one transport plan"
-          lead="Project movements fail at the joins between suppliers. We hold the whole scope so the joins are ours to manage."
-        />
-        <Link
-          href="/services"
-          className="inline-flex items-center gap-2 text-sm font-medium text-accent-600 transition-colors duration-150 hover:text-accent-700"
-        >
-          All services
-          <IconArrowRight className="size-4" />
-        </Link>
-      </div>
-
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {services.map((service) => {
-          const Icon = SERVICE_ICONS[service.icon];
-          return (
-            <Card key={service.slug} className="reveal p-6 transition-colors duration-150 hover:border-accent-600">
-              <Icon className="size-7 text-accent-600" />
-              <h3 className="mt-5 text-lg">
-                <Link href={`/services#${service.slug}`} className="hover:text-accent-700">
-                  <span className="absolute inset-0" aria-hidden />
-                  {service.title}
-                </Link>
-              </h3>
-              <p className="mt-2.5 text-sm leading-relaxed text-ink-600">{service.summary}</p>
-            </Card>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function WhyUs() {
-  return (
-    <section className="bg-ink-900 py-20 lg:py-24">
-      <div className="container-page">
-        <SectionHeading
-          eyebrow="Why Navigator Sea Land"
-          title="Corridor knowledge you cannot buy from a rate sheet"
-          tone="dark"
-        />
-        <div className="mt-12 grid gap-px overflow-hidden rounded-lg bg-ink-800 sm:grid-cols-2">
-          {differentiators.map((item) => (
-            <div key={item.title} className="reveal bg-ink-900 p-7">
-              <h3 className="text-base text-white">{item.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-ink-400">{item.body}</p>
-            </div>
-          ))}
         </div>
-      </div>
-    </section>
-  );
-}
+        <CardGrid items={homeCapabilities} columns={3} className="mt-10" />
+      </Band>
 
-function CorridorsPreview() {
-  return (
-    <section className="container-page py-20 lg:py-24">
-      <SectionHeading
-        eyebrow="Where we operate"
-        title="Five corridors, planned as one network"
-        lead="A movement rarely uses a single corridor. Knowing where they connect — and where they do not — is most of the work."
-      />
+      {/* How we deliver */}
+      <Band alt={false}>
+        <div className="max-w-3xl">
+          <p className="eyebrow">How we deliver</p>
+          <h2 className="mt-3 text-2xl sm:text-3xl">Engineered from First Enquiry to Final Set-Down</h2>
+        </div>
+        <div className="mt-12">
+          <ProcessSteps items={processSteps} />
+        </div>
+      </Band>
 
-      <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {corridors.map((corridor) => (
-          <Card key={corridor.key} className="reveal group relative flex flex-col p-6 transition-colors duration-150 hover:border-accent-600">
-            <p className="eyebrow">{corridor.subtitle}</p>
-            <h3 className="mt-2.5 text-lg">
-              <Link href={`/corridors#${corridor.slug}`}>
-                <span className="absolute inset-0" aria-hidden />
-                {corridor.title}
-              </Link>
-            </h3>
-            <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-600">{corridor.summary}</p>
-            <div className="mt-5 flex flex-wrap gap-1.5">
-              {corridor.keyPoints.slice(0, 4).map((point) => (
-                <span key={point} className="rounded border border-ink-200 bg-ink-50 px-2 py-0.5 text-xs text-ink-600">
-                  {point}
-                </span>
-              ))}
-            </div>
-          </Card>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function OfficesPreview() {
-  return (
-    <section className="border-y border-ink-200 bg-white py-20 lg:py-24">
-      <div className="container-page">
-        <SectionHeading eyebrow="Our offices" title="On the corridors we sell" />
-        <div className="mt-12 grid gap-8 sm:grid-cols-3">
-          {offices.map((office) => (
-            <div key={office.key} className="reveal">
-              <p className="font-[family-name:var(--font-display)] text-lg font-semibold text-ink-900">
-                {office.city}
-              </p>
-              <p className="text-sm text-ink-500">{office.country}</p>
-              <p className="mt-1 text-sm font-medium text-accent-600">{office.role}</p>
-              <p className="mt-3 text-sm leading-relaxed text-ink-600">{office.description}</p>
-            </div>
-          ))}
+      {/* Strategic corridors */}
+      <Band alt id="corridors">
+        <div className="max-w-3xl">
+          <p className="eyebrow">Strategic corridors</p>
+          <h2 className="mt-3 text-2xl sm:text-3xl">{homeCorridorsIntro.heading}</h2>
+          <p className="mt-4 text-[1.0625rem] leading-relaxed text-ink-700">{homeCorridorsIntro.body}</p>
         </div>
         <div className="mt-10">
-          <ButtonLink href="/locations" variant="secondary">
-            Office details
-            <IconArrowRight className="size-4" />
-          </ButtonLink>
+          <CorridorMap corridors={corridors.map((c) => ({ slug: c.slug, title: c.title, href: c.path, summary: c.summary }))} />
         </div>
-      </div>
-    </section>
-  );
-}
+        <div className="mt-10">
+          <CtaButton cta={{ label: "View All Corridors", href: "/corridors", variant: "primary" }} />
+        </div>
+      </Band>
 
-function ClosingCta() {
-  return (
-    <section className="container-page py-20 lg:py-24">
-      <div className="rounded-lg border border-ink-200 bg-white px-7 py-12 text-center sm:px-12">
-        <h2 className="mx-auto max-w-2xl text-2xl sm:text-3xl">
-          Have a piece that does not fit a container?
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-[1.0625rem] leading-relaxed text-ink-600">
-          Send us the dimensions, the weight and where it has to end up. We will tell you how it moves, what it
-          needs, and how long the permits take.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <ButtonLink href="/quote" size="lg">
-            Request a Quote
-            <IconArrowRight className="size-4" />
-          </ButtonLink>
-          <ButtonLink href="/contact" size="lg" variant="secondary">
-            Contact Us
-          </ButtonLink>
+      {/* Industries */}
+      <Band alt={false}>
+        <div className="max-w-3xl">
+          <p className="eyebrow">Industries</p>
+          <h2 className="mt-3 text-2xl sm:text-3xl">{homeIndustriesHeading}</h2>
         </div>
-      </div>
-    </section>
+        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {industries.map((industry) => (
+            <li key={industry.slug} className="reveal">
+              <Link
+                href={industry.path}
+                className="group relative flex h-full flex-col justify-between overflow-hidden rounded-lg bg-ink-900 p-6 text-white shadow-card transition-transform duration-200 hover:-translate-y-0.5"
+              >
+                <span aria-hidden className="absolute -right-6 -top-6 size-28 rounded-full bg-accent-600/25 transition-transform duration-300 group-hover:scale-125" />
+                <ContentIcon name={industry.icon} className="relative size-8 text-gold-300" />
+                <span className="relative mt-10 block">
+                  <span className="block font-[family-name:var(--font-display)] text-lg font-semibold">{industry.title}</span>
+                  <span className="mt-2 block text-sm leading-snug text-ink-300">{industry.summary}</span>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-gold-300">
+                    Sector page
+                    <IconArrowRight className="size-4" />
+                  </span>
+                </span>
+              </Link>
+            </li>
+          ))}
+          <li className="reveal">
+            <Link
+              href="/industries"
+              className="flex h-full min-h-[12rem] flex-col items-center justify-center rounded-lg border-2 border-dashed border-accent-200 p-6 text-center text-accent-700 transition-colors duration-150 hover:border-accent-600 hover:bg-accent-50"
+            >
+              <span className="font-[family-name:var(--font-display)] font-semibold">All industries</span>
+              <IconArrowRight className="mt-2 size-5" />
+            </Link>
+          </li>
+        </ul>
+        <ConfirmNote title="Industry photo tiles">
+          The deck asks for one operations photo per industry tile. Tiles render with the icon treatment until photography is supplied.
+        </ConfirmNote>
+      </Band>
+
+      {/* Key figures — only with verified numbers */}
+      {keyFigures.verified && keyFigures.items.every((i) => typeof i.value === "number") ? (
+        <section className="bg-ink-900 py-16">
+          <div className="container-page grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+            {keyFigures.items.map((item) => (
+              <Counter key={item.label} value={item.value as number} suffix={item.suffix} label={item.label} />
+            ))}
+          </div>
+        </section>
+      ) : (
+        <div className="container-page">
+          <ConfirmNote title="Key figures">
+            The animated counters (years, countries served, tonnes moved, projects delivered, partner agents) are hidden until verified figures
+            are entered in <code className="font-mono text-xs">lib/content/company.ts → keyFigures</code> and <code className="font-mono text-xs">verified</code> is set to true.
+          </ConfirmNote>
+        </div>
+      )}
+
+      {/* Selected experience */}
+      <Band alt>
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div className="max-w-2xl">
+            <p className="eyebrow">Selected experience</p>
+            <h2 className="mt-3 text-2xl sm:text-3xl">{homeExperienceHeading}</h2>
+          </div>
+          <Link href="/projects" className="inline-flex items-center gap-2 text-sm font-medium text-accent-700 hover:underline">
+            All case studies
+            <IconArrowRight className="size-4" />
+          </Link>
+        </div>
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {publishedCaseStudies.slice(0, 3).map((study) => {
+            const corridor = corridors.find((c) => c.slug === study.corridorSlug);
+            return (
+              <Card key={study.slug} className="reveal flex flex-col p-6">
+                <p className="eyebrow">{study.sector}</p>
+                <h3 className="mt-3 text-lg">{study.title}</h3>
+                <p className="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-ink-600">{study.summary}</p>
+                {corridor ? (
+                  <Link href={corridor.path} className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent-700 hover:underline">
+                    {corridor.title}
+                    <IconArrowRight className="size-4" />
+                  </Link>
+                ) : null}
+              </Card>
+            );
+          })}
+        </div>
+        <ConfirmNote title="Case study wording">
+          These examples come from the founding team's track record. Confirm (a) which projects Navigator Sea Land Limited executed directly
+          versus experience of the team at previous employers, and (b) written permission from each client/project owner before naming them.
+          Cards are published anonymised, as worded in the deck.
+        </ConfirmNote>
+      </Band>
+
+      {/* Why Navigator */}
+      <Band alt={false}>
+        <div className="max-w-3xl">
+          <p className="eyebrow">Why Navigator</p>
+          <h2 className="mt-3 text-2xl sm:text-3xl">Specialist Capability with Local Control</h2>
+        </div>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {homeUsps.map((usp) => (
+            <div key={usp.title} className="reveal rounded-lg border-t-4 border-gold-500 bg-white p-6 shadow-card">
+              <ContentIcon name={usp.icon} className="size-7 text-accent-700" />
+              <h3 className="mt-4 text-base font-semibold">{usp.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-600">{usp.body}</p>
+            </div>
+          ))}
+        </div>
+      </Band>
+
+      {/* Testimonials — hidden until collected */}
+      {testimonials.length > 0 ? (
+        <Band alt>
+          <h2 className="text-2xl sm:text-3xl">What Clients Say</h2>
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+            {testimonials.map((t) => (
+              <blockquote key={t.name} className="rounded-lg bg-white p-6 shadow-card">
+                <p className="text-[1.0625rem] leading-relaxed text-ink-800">“{t.quote}”</p>
+                <footer className="mt-4 text-sm text-ink-600">
+                  <strong className="text-ink-900">{t.name}</strong>, {t.title}, {t.company}
+                </footer>
+              </blockquote>
+            ))}
+          </div>
+        </Band>
+      ) : (
+        <div className="container-page">
+          <ConfirmNote title="Testimonials">
+            Collect 2–3 short client testimonials (name, title, company, permission). The section is hidden until they are added in{" "}
+            <code className="font-mono text-xs">lib/content/company.ts → testimonials</code>.
+          </ConfirmNote>
+        </div>
+      )}
+
+      {/* Latest insights — the three latest published posts */}
+      {publishedInsights.length > 0 ? (
+        <Band alt>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <h2 className="text-2xl sm:text-3xl">Latest Insights</h2>
+            <Link href="/insights" className="inline-flex items-center gap-2 text-sm font-medium text-accent-700 hover:underline">
+              All insights
+              <IconArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+            {publishedInsights.slice(0, 3).map((post) => (
+              <Card key={post.title} className="reveal p-6 surface-hover">
+                <p className="eyebrow">{post.category}</p>
+                <h3 className="mt-3 text-lg">
+                  <Link href={post.href!}>
+                    <span className="absolute inset-0" aria-hidden />
+                    {post.title}
+                  </Link>
+                </h3>
+                {post.excerpt ? <p className="mt-2 text-sm text-ink-600">{post.excerpt}</p> : null}
+              </Card>
+            ))}
+          </div>
+        </Band>
+      ) : null}
+
+      <ClosingCta />
+    </>
   );
 }

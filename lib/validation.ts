@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { STATUS_KEYS, MODES, CORRIDORS, ROLES, OFFICES } from "./constants";
+import { STATUS_KEYS, MODES, CORRIDORS, ROLES, OFFICES, QUOTE_SERVICE_TYPES, LANGUAGES } from "./constants";
 
 /**
  * Form fields arrive as strings from HTML forms. These preprocessors turn
@@ -163,33 +163,90 @@ export const checkpointSchema = z.object({
 
 // --- Public forms ------------------------------------------------------------
 
-export const quoteRequestSchema = z.object({
-  companyName: requiredText("Company name"),
-  contactPerson: requiredText("Contact person"),
-  email: z.string({ required_error: "Email is required." }).trim().email("Enter a valid email address."),
-  phone: optionalText,
-  country: optionalText,
-
-  originCity: requiredText("Origin city"),
-  originCountry: requiredText("Origin country"),
-  destinationCity: requiredText("Destination city"),
-  destinationCountry: requiredText("Destination country"),
-
-  cargoDescription: requiredText("Cargo description", 2000),
-  commodity: optionalText,
-  packageCount: optionalInt,
-  weightKg: optionalNumber,
-  lengthCm: optionalNumber,
-  widthCm: optionalNumber,
-  heightCm: optionalNumber,
-  isOOG: checkbox,
-  preferredModes: multiSelect(modeEnum),
-  requiredByDate: optionalDate,
-  incoterms: optionalText,
-  additionalInfo: optionalText,
-  /** Honeypot: a hidden field real users never fill in. */
-  website: optionalText,
+const serviceTypeEnum = z.enum(Object.keys(QUOTE_SERVICE_TYPES) as [string, ...string[]], {
+  errorMap: () => ({ message: "Choose one of the listed services." }),
 });
+const languageEnum = z.enum(Object.keys(LANGUAGES) as [string, ...string[]], {
+  errorMap: () => ({ message: "Choose a listed language." }),
+});
+
+/**
+ * UN numbers are four digits, optionally prefixed "UN". Stored as `UN1234`
+ * whatever the visitor typed, so the admin and export read consistently.
+ */
+const unNumber = z.preprocess(
+  emptyToUndefined,
+  z
+    .string()
+    .trim()
+    .regex(/^(UN\s?)?\d{4}$/i, "Enter a four-digit UN number, e.g. UN 1234.")
+    .transform((value) => `UN${value.replace(/\D/g, "")}`)
+    .optional(),
+);
+
+/**
+ * The public seven-step form. Everything the original single-page form took is
+ * still accepted, so the schema is a strict superset; the new fields are all
+ * optional. Dimensions arrive in metres (`lengthM` …) because that is how
+ * project cargo is quoted — the action converts to the centimetres the
+ * database and admin already use. The legacy `lengthCm` fields remain valid.
+ */
+export const quoteRequestSchema = z
+  .object({
+    serviceType: z.preprocess(emptyToUndefined, serviceTypeEnum.optional()),
+
+    companyName: requiredText("Company name"),
+    contactPerson: requiredText("Contact person"),
+    contactPosition: optionalText,
+    email: z.string({ required_error: "Email is required." }).trim().email("Enter a valid email address."),
+    phone: optionalText,
+    country: optionalText,
+    preferredLanguage: z.preprocess(emptyToUndefined, languageEnum.optional()),
+
+    originCity: requiredText("Origin city"),
+    originCountry: requiredText("Origin country"),
+    destinationCity: requiredText("Destination city"),
+    destinationCountry: requiredText("Destination country"),
+
+    cargoDescription: requiredText("Cargo description", 2000),
+    commodity: optionalText,
+    hsCode: z.preprocess(emptyToUndefined, z.string().trim().max(20, "HS codes are at most 20 characters.").optional()),
+    packageCount: optionalInt,
+    weightKg: optionalNumber,
+    weightPerPieceKg: optionalNumber,
+    lengthCm: optionalNumber,
+    widthCm: optionalNumber,
+    heightCm: optionalNumber,
+    lengthM: optionalNumber,
+    widthM: optionalNumber,
+    heightM: optionalNumber,
+
+    isOOG: checkbox,
+    isDangerousGoods: checkbox,
+    unNumber,
+    isTemperatureControlled: checkbox,
+    isBulkLiquid: checkbox,
+    insuranceRequired: checkbox,
+
+    preferredModes: multiSelect(modeEnum),
+    cargoReadyDate: optionalDate,
+    requiredByDate: optionalDate,
+    incoterms: optionalText,
+    additionalInfo: optionalText,
+    /** Honeypot: a hidden field real users never fill in. */
+    website: optionalText,
+  })
+  .superRefine((data, ctx) => {
+    if (data.isDangerousGoods && !data.unNumber) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["unNumber"],
+        message: "Enter the UN number for dangerous goods.",
+      });
+    }
+  });
+
+export type QuoteRequestInput = z.infer<typeof quoteRequestSchema>;
 
 export const enquirySchema = z.object({
   trackingRef: optionalText,

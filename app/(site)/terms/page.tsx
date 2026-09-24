@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Alert } from "@/components/ui";
-import { PageHero } from "@/components/page-hero";
+import { PageHero } from "@/components/site/page-hero";
 import { company } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions",
+  title: "Terms & Conditions | Navigator Sea Land Limited",
   description: "Website terms of use and the trading conditions under which Navigator Sea Land Limited contracts.",
 };
 

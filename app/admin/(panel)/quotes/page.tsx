@@ -5,8 +5,8 @@ import { IconDownload } from "@/components/icons";
 import { prisma } from "@/lib/db";
 import { canWrite, getSessionUser } from "@/lib/auth";
 import { setQuoteStatus, saveQuoteNotes } from "../pipeline-actions";
-import { MODES, QUOTE_STATUSES, parseList } from "@/lib/constants";
-import { formatDate, formatDateTime, formatDimensions, formatWeight } from "@/lib/format";
+import { LANGUAGES, MODES, QUOTE_SERVICE_TYPES, QUOTE_STATUSES, parseList } from "@/lib/constants";
+import { formatBytes, formatDate, formatDateTime, formatDimensions, formatWeight } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Quote requests" };
 export const dynamic = "force-dynamic";
@@ -25,6 +25,7 @@ export default async function QuotesPage({
       where: filter ? { status: filter } : {},
       orderBy: { createdAt: "desc" },
       take: 200,
+      include: { attachments: { orderBy: { createdAt: "asc" } } },
     }),
   ]);
 
@@ -62,6 +63,16 @@ export default async function QuotesPage({
               const statusAction = setQuoteStatus.bind(null, quote.id);
               const notesAction = saveQuoteNotes.bind(null, quote.id);
               const modes = parseList(quote.preferredModes);
+              const serviceLabel = quote.serviceType
+                ? (QUOTE_SERVICE_TYPES[quote.serviceType as keyof typeof QUOTE_SERVICE_TYPES] ?? quote.serviceType)
+                : null;
+              const special = [
+                quote.isOOG ? "Out of gauge" : null,
+                quote.isDangerousGoods ? `Dangerous goods${quote.unNumber ? ` (${quote.unNumber})` : ""}` : null,
+                quote.isTemperatureControlled ? "Temperature-controlled" : null,
+                quote.isBulkLiquid ? "Liquid in bulk" : null,
+                quote.insuranceRequired ? "Insurance required" : null,
+              ].filter((item): item is string => item !== null);
 
               return (
                 <Card key={quote.id} className="overflow-hidden">
@@ -71,14 +82,17 @@ export default async function QuotesPage({
                         <span className="font-[family-name:var(--font-mono)] font-medium text-ink-900">
                           {quote.reference}
                         </span>
+                        {serviceLabel ? <Pill tone="accent">{serviceLabel}</Pill> : null}
                         {quote.isOOG ? <Pill tone="signal">OOG</Pill> : null}
+                        {quote.isDangerousGoods ? <Pill tone="signal">DG</Pill> : null}
                         <span className="text-xs text-ink-500">{formatDateTime(quote.createdAt)}</span>
                       </div>
                       <p className="mt-1 font-[family-name:var(--font-display)] font-semibold text-ink-900">
                         {quote.companyName}
                       </p>
                       <p className="text-sm text-ink-600">
-                        {quote.contactPerson} ·{" "}
+                        {quote.contactPerson}
+                        {quote.contactPosition ? ` (${quote.contactPosition})` : ""} ·{" "}
                         <a href={`mailto:${quote.email}`} className="text-accent-600 underline underline-offset-2">
                           {quote.email}
                         </a>
@@ -122,20 +136,51 @@ export default async function QuotesPage({
                       </Row>
                       <Row label="Cargo">{quote.cargoDescription}</Row>
                       {quote.commodity ? <Row label="Commodity">{quote.commodity}</Row> : null}
+                      {quote.hsCode ? <Row label="HS code">{quote.hsCode}</Row> : null}
                       <Row label="Pieces / weight">
                         {quote.packageCount ?? "—"} · {formatWeight(quote.weightKg)}
                       </Row>
+                      {quote.weightPerPieceKg != null ? (
+                        <Row label="Weight per piece">{formatWeight(quote.weightPerPieceKg)}</Row>
+                      ) : null}
                       <Row label="Dimensions">
                         {formatDimensions(quote.lengthCm, quote.widthCm, quote.heightCm)}
                       </Row>
+                      {special.length ? <Row label="Special requirements">{special.join(", ")}</Row> : null}
                       {modes.length ? (
                         <Row label="Modes">
                           {modes.map((m) => MODES[m as keyof typeof MODES] ?? m).join(", ")}
                         </Row>
                       ) : null}
+                      {quote.cargoReadyDate ? <Row label="Cargo ready">{formatDate(quote.cargoReadyDate)}</Row> : null}
                       {quote.requiredByDate ? <Row label="Required by">{formatDate(quote.requiredByDate)}</Row> : null}
                       {quote.incoterms ? <Row label="Incoterms">{quote.incoterms}</Row> : null}
+                      {quote.contactPosition ? <Row label="Position">{quote.contactPosition}</Row> : null}
+                      {quote.preferredLanguage ? (
+                        <Row label="Language">
+                          {LANGUAGES[quote.preferredLanguage as keyof typeof LANGUAGES] ?? quote.preferredLanguage}
+                        </Row>
+                      ) : null}
                       {quote.additionalInfo ? <Row label="Notes">{quote.additionalInfo}</Row> : null}
+                      {quote.attachments.length ? (
+                        <Row label="Attachments">
+                          <ul className="space-y-1">
+                            {quote.attachments.map((file) => (
+                              <li key={file.id} className="flex flex-wrap items-baseline gap-x-2">
+                                <a
+                                  href={file.storagePath}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-accent-600 underline underline-offset-2"
+                                >
+                                  {file.fileName}
+                                </a>
+                                <span className="text-xs text-ink-500">{formatBytes(file.sizeBytes)}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </Row>
+                      ) : null}
                     </dl>
 
                     {writable ? (

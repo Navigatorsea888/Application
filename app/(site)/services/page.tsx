@@ -1,101 +1,86 @@
 import type { Metadata } from "next";
-import { ButtonLink, Card } from "@/components/ui";
-import { PageHero } from "@/components/page-hero";
-import { IconArrowRight, IconCheck, SERVICE_ICONS } from "@/components/icons";
-import { services } from "@/lib/content";
+import Link from "next/link";
+import { Card } from "@/components/ui";
+import { ContentIcon, IconArrowRight } from "@/components/icons";
+import { HeroBanner } from "@/components/site/hero-banner";
+import { Band } from "@/components/site/section-renderer";
+import { ClosingCta } from "@/components/site/closing-cta";
+import { ProcessSteps } from "@/components/site/process-steps";
+import { homeUsps, processSteps, services, servicesLanding } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Services",
-  description:
-    "Project cargo management, OOG and heavy-lift, multimodal transport, customs clearance, chartering, and warehousing across Central Asia and the Eurasian corridors.",
+  title: servicesLanding.meta.title,
+  description: servicesLanding.meta.description,
+  keywords: servicesLanding.meta.keywords,
+  alternates: { canonical: "/services" },
 };
 
 export default function ServicesPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Services"
-        title="Everything a project movement needs, under one plan"
-        lead="Six service lines that are rarely bought separately. Most projects need four or five of them in sequence, which is exactly why holding them together matters."
-      >
-        <nav aria-label="Services" className="mt-8 flex flex-wrap gap-2">
+      <HeroBanner hero={servicesLanding.hero} crumbs={[{ label: "Services", href: "/services" }]} eyebrow="Services" />
+
+      <Band alt={false}>
+        <h2 className="text-2xl sm:text-3xl">Ten Services, One Accountable Team</h2>
+        <p className="mt-4 max-w-3xl text-[1.0625rem] leading-relaxed text-ink-700">
+          Most complex movements need several of these in sequence — a heavy haul leg, a Caspian crossing, customs at two borders and a
+          laydown yard at the end. Each service page explains what we do and how; the quote form lets you ask for any combination.
+        </p>
+        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
-            <a
-              key={service.slug}
-              href={`#${service.slug}`}
-              className="rounded-md border border-ink-300 px-3 py-1.5 text-sm text-ink-700 transition-colors duration-150 hover:border-accent-600 hover:text-accent-700"
-            >
-              {service.title}
-            </a>
-          ))}
-        </nav>
-      </PageHero>
-
-      <div className="container-page py-16 lg:py-20">
-        <div className="space-y-16">
-          {services.map((service, index) => {
-            const Icon = SERVICE_ICONS[service.icon];
-            return (
-              <section
-                key={service.slug}
-                id={service.slug}
-                className="scroll-mt-28 border-b border-ink-200 pb-16 last:border-b-0 last:pb-0"
-              >
-                <div className="grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <span className="grid size-11 place-items-center rounded-md bg-accent-50 text-accent-600">
-                        <Icon className="size-6" />
-                      </span>
-                      <span className="font-[family-name:var(--font-mono)] text-sm text-ink-500">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <h2 className="mt-5 text-2xl">{service.title}</h2>
-                    <p className="mt-3 text-lg leading-relaxed text-ink-600">{service.summary}</p>
-                    <div className="prose-body mt-6 max-w-2xl">
-                      {service.body.map((paragraph) => (
-                        <p key={paragraph.slice(0, 40)}>{paragraph}</p>
-                      ))}
-                    </div>
-                  </div>
-
-                  <Card className="h-fit p-6">
-                    <h3 className="font-[family-name:var(--font-display)] text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
-                      Included
-                    </h3>
-                    <ul className="mt-4 space-y-3">
-                      {service.features.map((feature) => (
-                        <li key={feature} className="flex gap-3 text-sm leading-relaxed text-ink-700">
-                          <IconCheck className="mt-0.5 size-4 shrink-0 text-accent-600" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </Card>
+            <li key={service.slug}>
+              <Card className="reveal flex h-full flex-col p-6 surface-hover">
+                <div className="flex items-start justify-between gap-3">
+                  <span className="grid size-11 place-items-center rounded-md bg-accent-50 text-accent-700">
+                    <ContentIcon name={service.icon} className="size-6" />
+                  </span>
+                  {service.isNew ? (
+                    <span className="rounded bg-gold-500 px-2 py-0.5 font-[family-name:var(--font-display)] text-[0.625rem] font-bold uppercase tracking-wide text-ink-900">
+                      New
+                    </span>
+                  ) : null}
                 </div>
-              </section>
-            );
-          })}
-        </div>
+                <h3 className="mt-5 text-lg">
+                  <Link href={service.path} className="hover:text-accent-700">
+                    <span className="absolute inset-0" aria-hidden />
+                    {service.title}
+                  </Link>
+                </h3>
+                <p className="mt-2.5 flex-1 text-[0.9375rem] leading-relaxed text-ink-600">{service.summary}</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent-700">
+                  Learn more
+                  <IconArrowRight className="size-4" />
+                </span>
+              </Card>
+            </li>
+          ))}
+        </ul>
+      </Band>
 
-        <div className="mt-16 rounded-lg border border-ink-200 bg-white px-7 py-10 text-center">
-          <h2 className="text-2xl">Not sure which of these you need?</h2>
-          <p className="mx-auto mt-3 max-w-xl text-ink-600">
-            Most enquiries start with a drawing and a delivery date. Send those and we will tell you what the
-            movement actually requires.
-          </p>
-          <div className="mt-7 flex flex-wrap justify-center gap-3">
-            <ButtonLink href="/quote" size="lg">
-              Request a Quote
-              <IconArrowRight className="size-4" />
-            </ButtonLink>
-            <ButtonLink href="/contact" size="lg" variant="secondary">
-              Contact Us
-            </ButtonLink>
-          </div>
+      <Band alt>
+        <div className="max-w-3xl">
+          <p className="eyebrow">How we deliver</p>
+          <h2 className="mt-3 text-2xl sm:text-3xl">Engineered from First Enquiry to Final Set-Down</h2>
         </div>
-      </div>
+        <div className="mt-12">
+          <ProcessSteps items={processSteps} />
+        </div>
+      </Band>
+
+      <Band alt={false}>
+        <h2 className="text-2xl sm:text-3xl">Why Navigator</h2>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {homeUsps.map((usp) => (
+            <div key={usp.title} className="reveal rounded-lg border-t-4 border-gold-500 bg-white p-6 shadow-card">
+              <ContentIcon name={usp.icon} className="size-7 text-accent-700" />
+              <h3 className="mt-4 text-base font-semibold">{usp.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-600">{usp.body}</p>
+            </div>
+          ))}
+        </div>
+      </Band>
+
+      <ClosingCta />
     </>
   );
 }
