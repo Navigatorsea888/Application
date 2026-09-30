@@ -43,10 +43,9 @@ grep -rn "CONFIRM" lib/content/
 
 - [ ] Almaty office full street address. Atyrau office full street address.
       Until confirmed the footer and Contact page show city and country only.
-- [ ] Atyrau office telephone. Until confirmed "via main line +7 775 662 4455" is shown.
-- [ ] Main email address (deck: `[email — CONFIRM]`). `operations@navigatorsealand.com`
-      is published; change it if wrong.
-- [ ] Department mailboxes `quotes@`, `projects@`, `operations@`, `careers@` — confirm
+- [ ] Atyrau office telephone. Until confirmed "via main line +7 778 662 4455" is shown.
+- [ ] Main email address. `info@navigatorsealand.com` is published (changed from operations@ on 30 Sept 2026); change it if wrong.
+- [ ] Department mailboxes `quotes@`, `projects@`, `info@`, `careers@` — confirm
       they exist and are monitored. All four are published on the Contact page.
 - [ ] Dedicated 24/7 desk number (deck: `[24/7 number — CONFIRM]`). The main
       line is published as the 24/7 number until then (`company.emergencyPhone`).

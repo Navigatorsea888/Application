@@ -5,7 +5,6 @@ import { Band, RelatedLinks, SectionRenderer } from "@/components/site/section-r
 import { ClosingCta } from "@/components/site/closing-cta";
 import { CorridorMap } from "@/components/site/corridor-map";
 import { corridors, corridorsLanding, findCorridor } from "@/lib/content";
-import { formatDate } from "@/lib/format";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /**
  * Corridor sub-page (deck 7): route map, key facts, border points, suitable
  * cargo, documentation, advantages and constraints, quote CTA. Transit-time
- * ranges appear only once validated; a "last reviewed" date is always shown.
+ * ranges appear only once validated.
  */
 export default async function CorridorPage({ params }: Props) {
   const { slug } = await params;
@@ -76,9 +75,6 @@ export default async function CorridorPage({ params }: Props) {
               <dd className="mt-1.5 text-sm leading-relaxed text-ink-300">{corridorsLanding.transitNote}</dd>
             </div>
           </dl>
-            <p className="mt-5 border-t border-white/15 pt-4 text-xs text-ink-300">
-              Operational detail last reviewed {formatDate(corridor.reviewedOn)}.
-            </p>
           </div>
           <div>
             <CorridorMap

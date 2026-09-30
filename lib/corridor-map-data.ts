@@ -26,7 +26,6 @@ export const CORRIDOR_ORDER = [
   "middle-corridor",
   "instc",
   "caspian-sea",
-  "south-asia-khunjerab",
   "europe-turkiye",
 ] as const;
 
@@ -113,14 +112,11 @@ export const MAP_NODES = [
   { id: "europe", label: "Europe", lon: 22.0, lat: 51.0, kind: "hub", dx: 10, dy: -6 },
   // China
   { id: "urumqi", label: "Urumqi", lon: 87.6, lat: 43.8, kind: "city", dx: 9, dy: 4 },
-  { id: "kashgar", label: "Kashgar", lon: 76.0, lat: 39.5, kind: "city", dx: 9, dy: 4 },
   { id: "xian", label: "Xi'an", lon: 108.9, lat: 34.3, kind: "city", dx: -8, dy: 12, anchor: "end" },
   { id: "lianyungang", label: "Lianyungang", lon: 119.2, lat: 34.6, kind: "port", dx: 0, dy: -10, anchor: "middle" },
   { id: "tianjin", label: "Tianjin", lon: 117.2, lat: 39.1, kind: "port", dx: 9, dy: 4 },
   { id: "shanghai", label: "Shanghai", lon: 121.5, lat: 31.2, kind: "port", dx: -9, dy: 4, anchor: "end" },
   // South Asia / Gulf
-  { id: "khunjerab", label: "Khunjerab / Sost", lon: 75.4, lat: 36.8, kind: "border", dx: 9, dy: 4 },
-  { id: "karachi", label: "Karachi", lon: 67.0, lat: 24.9, kind: "port", dx: -9, dy: 4, anchor: "end" },
   { id: "mundra", label: "Mundra / Nhava Sheva", lon: 70.5, lat: 21.5, kind: "port", dx: 9, dy: 4 },
   { id: "bandar-abbas", label: "Bandar Abbas", lon: 56.3, lat: 27.2, kind: "port", dx: 9, dy: -4 },
   { id: "jebel-ali", label: "Jebel Ali", lon: 55.1, lat: 25.0, kind: "port", dx: 9, dy: 11 },
@@ -206,17 +202,6 @@ export const MAP_ROUTES: Readonly<Record<CorridorSlug, MapRoute>> = {
       { from: "turkmenbashi", to: "baku", mode: "sea", bow: 0.8 },
       { from: "aktau", to: "atyrau", mode: "road", bow: 1 },
       { from: "atyrau", to: "tengiz", mode: "road", bow: 0.6 },
-    ],
-  },
-  "south-asia-khunjerab": {
-    slug: "south-asia-khunjerab",
-    accent: "road",
-    legs: [
-      { from: "tengiz", to: "almaty", mode: "road", bow: 0.8 },
-      { from: "almaty", to: "khorgos", mode: "road", bow: -0.8 },
-      { from: "khorgos", to: "kashgar", mode: "road", bow: -1 },
-      { from: "kashgar", to: "khunjerab", mode: "road", bow: 0.8 },
-      { from: "khunjerab", to: "karachi", mode: "road", bow: 1 },
     ],
   },
   "europe-turkiye": {

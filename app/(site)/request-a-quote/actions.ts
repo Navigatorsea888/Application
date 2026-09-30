@@ -265,7 +265,7 @@ export async function submitQuoteRequest(_prev: FormState, formData: FormData): 
   return {
     status: "success",
     reference: created.reference,
-    message: `Thank you. Your enquiry reference is ${created.reference}. A Navigator specialist will contact you within one business day. For urgent cargo, call our 24/7 desk at +7 775 662 4455.`,
+    message: `Thank you. Your enquiry reference is ${created.reference}. A Navigator specialist will contact you within one business day. For urgent cargo, call our 24/7 desk at +7 778 662 4455.`,
     warning: attachmentWarning,
   };
 }

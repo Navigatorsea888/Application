@@ -28,7 +28,7 @@ export default function CorridorsPage() {
       </Band>
 
       <Band alt id="compare">
-        <h2 className="text-2xl sm:text-3xl">Six Corridors Compared</h2>
+        <h2 className="text-2xl sm:text-3xl">Five Corridors Compared</h2>
         <div className="mt-8 overflow-x-auto rounded-lg border border-ink-200 bg-white shadow-card">
           <table className="w-full min-w-[44rem] border-collapse text-left text-[0.9375rem]">
             <caption className="sr-only">Corridor routes and what each is best for</caption>
@@ -59,8 +59,7 @@ export default function CorridorsPage() {
         </div>
         <p className="mt-5 max-w-3xl text-sm leading-relaxed text-ink-600">{corridorsLanding.transitNote}</p>
         <ConfirmNote title="Transit times">
-          Publish transit-time ranges only after internal validation; corridor performance changes frequently. Each corridor page shows a
-          “last reviewed” date. Add validated ranges to the corridor content module when ready.
+          Publish transit-time ranges only after internal validation; corridor performance changes frequently. Add validated ranges to the corridor content module when ready.
         </ConfirmNote>
       </Band>
 

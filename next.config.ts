@@ -14,6 +14,7 @@ const config: NextConfig = {
       { source: "/quote", destination: "/request-a-quote", permanent: true },
       { source: "/locations", destination: "/contact", permanent: true },
       { source: "/about-us/", destination: "/about-us", permanent: true },
+      { source: "/corridors/south-asia-khunjerab", destination: "/corridors", permanent: true },
     ];
   },
   async headers() {

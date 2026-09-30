@@ -61,8 +61,8 @@ deck leaves something open or where it asks for material that does not yet exist
 /industries/{oil-gas, petrochemicals-chemicals, mining-metals, renewable-energy-bess,
              power-utilities, epc-infrastructure, agro-commodities}
 /corridors                          Landing with interactive SVG map and comparison table
-/corridors/{china-land-bridge, middle-corridor, instc, caspian-sea, south-asia-khunjerab,
-            europe-turkiye}
+/corridors/{china-land-bridge, middle-corridor, instc, caspian-sea, europe-turkiye}
+                                    (South Asia / Khunjerab removed at the client's request, 30 Sept 2026)
 /projects                           Case study cards; gallery hidden until photos exist
 /insights                           News (topics in preparation) · Tools · Downloads
 /insights/tools                     CBM calculator · OOG pre-check · Incoterms · Equipment specs

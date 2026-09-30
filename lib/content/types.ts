@@ -229,7 +229,7 @@ export interface CorridorPage extends ContentPage {
   route: string;
   bestFor: string;
   borderPoints: string[];
-  /** ISO date the operational detail was last reviewed. Shown on the page. */
+  /** ISO date the operational detail was last reviewed. Internal record; not shown on the page. */
   reviewedOn: string;
   related: RelatedLink[];
 }

@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Corridors & Network — landing page and six corridor sub-pages.
+// Corridors & Network — landing page and five corridor sub-pages.
 // Source: Website Content — Final Copy Deck v2.0, section 7.
 //
 // The deck supplies the landing copy and a route/best-for table, and asks for
@@ -7,9 +7,8 @@
 // points, suitable cargo, documentation, advantages and constraints.
 //
 // Transit-time ranges are NOT published: the deck requires internal
-// validation first and a "last updated" date on each page. Each corridor
-// carries `reviewedOn`; set `transitTimes` on a corridor once figures are
-// validated and the page will show them.
+// validation first. `reviewedOn` is an internal record and is no longer
+// shown on the page (removed at the client's request, 30 Sept 2026).
 // ---------------------------------------------------------------------------
 
 import type { CorridorPage } from "./types";
@@ -18,7 +17,7 @@ export const corridorsLanding = {
   meta: {
     title: "Eurasian Logistics Corridors | Navigator Sea Land Limited",
     description:
-      "Expertise across the China Land Bridge, Middle Corridor (TITR), INSTC, Caspian Sea and Khunjerab corridors connecting Central Asia to the world.",
+      "Expertise across the China Land Bridge, Middle Corridor (TITR), INSTC, Caspian Sea and Europe–Türkiye corridors connecting Central Asia to the world.",
     keywords: [
       "Middle Corridor logistics",
       "TITR freight",
@@ -331,76 +330,6 @@ export const corridors: CorridorPage[] = [
     ],
   },
   {
-    slug: "south-asia-khunjerab",
-    path: "/corridors/south-asia-khunjerab",
-    title: "South Asia (Khunjerab)",
-    summary: "Road link via the Khunjerab Pass to Pakistan ports and project sites.",
-    icon: "map",
-    route: "Kazakhstan → China (Xinjiang) → Khunjerab Pass → Sost → Pakistan",
-    bestFor: "OOG and mining cargo to Pakistan; Karachi port connections",
-    borderPoints: ["Khorgos / Nur Zholy (Kazakhstan–China)", "Kashgar", "Khunjerab Pass", "Sost (Pakistan)", "Karachi"],
-    reviewedOn: REVIEWED,
-    meta: {
-      title: "Khunjerab Corridor: Central Asia to Pakistan by Road | Navigator Sea Land Limited",
-      description:
-        "Road freight from Kazakhstan and Central Asia through Xinjiang and the Khunjerab Pass to Sost, Karachi and Pakistani project sites, including oversized and mining cargo.",
-      keywords: ["Khunjerab freight", "Kazakhstan Pakistan road transport", "Central Asia Pakistan logistics"],
-    },
-    hero: {
-      title: "South Asia via the Khunjerab Pass",
-      lead: "The high-altitude road corridor linking Kazakhstan and Central Asia with Pakistan's ports and project sites through Xinjiang.",
-      ctas: [
-        { label: "Request a Quote", href: "/request-a-quote", variant: "gold" },
-        { label: "All Corridors", href: "/corridors", variant: "onDark" },
-      ],
-    },
-    blocks: [
-      {
-        type: "prose",
-        heading: "The Route",
-        paragraphs: [
-          "Cargo leaves Kazakhstan by road through Khorgos or Nur Zholy into China's Xinjiang region, continues to Kashgar, and climbs the Karakoram Highway to the Khunjerab Pass — the highest paved border crossing in the world — before descending to Sost in Pakistan and onward to Islamabad, Karachi or the project site.",
-          "Our team pioneered a multi-country route on this corridor for oversized oilfield equipment from Tengiz in western Kazakhstan to Baluchistan. That experience — permits in three jurisdictions, altitude and weather windows, and the engineering of oversized loads on mountain roads — is what we bring to every enquiry on the route.",
-        ],
-      },
-      {
-        type: "cards",
-        heading: "Suitable Cargo",
-        columns: 3,
-        items: [
-          { title: "Oversized oilfield equipment", body: "Drilling and production equipment between the Caspian region and Pakistani fields.", icon: "flame" },
-          { title: "Mining cargo", body: "Equipment, reagents and concentrates between Central Asian mines and Pakistani ports.", icon: "pickaxe" },
-          { title: "Project and general cargo", body: "Full truck loads under transit procedures where the sea route via Karachi and Bandar Abbas is slower.", icon: "truck" },
-        ],
-      },
-      {
-        type: "list",
-        heading: "Documentation",
-        items: [
-          "CMR consignment notes and transit procedures across Kazakhstan, China and Pakistan.",
-          "Oversize permits and escort arrangements in each jurisdiction for OOG loads.",
-          "Export, transit and import declarations, with EAEU formalities at Kazakh exit or entry.",
-        ],
-      },
-      {
-        type: "table",
-        heading: "Advantages and Constraints",
-        caption: "Khunjerab corridor advantages and constraints",
-        columns: ["Advantages", "Constraints"],
-        rows: [
-          ["A direct overland link between Central Asia and Pakistan that avoids Iran and the long sea route.", "Seasonal: the pass closes in winter and weather windows govern the schedule."],
-          ["Proven for oversized loads with the right engineering and permits.", "Altitude, gradients and mountain roads limit dimensions and weights; route surveys are essential."],
-          ["Connects to Karachi and Pakistani project sites by road.", "Border processing at three frontiers requires pre-arranged procedures."],
-        ],
-      },
-    ],
-    related: [
-      { label: "Road Freight", href: "/services/road-freight", kind: "service" },
-      { label: "Heavy Haul & Over-Dimensional Trucking", href: "/services/heavy-haul-over-dimensional-trucking", kind: "service" },
-      { label: "Mining & Metals", href: "/industries/mining-metals", kind: "industry" },
-    ],
-  },
-  {
     slug: "europe-turkiye",
     path: "/corridors/europe-turkiye",
     title: "Europe & Türkiye",
@@ -476,7 +405,7 @@ export function findCorridor(slug: string): CorridorPage | undefined {
   return corridors.find((c) => c.slug === slug);
 }
 
-/** Deck 4 "Strategic Corridors" — six home-page tiles, in the deck's order. */
+/** Deck 4 "Strategic Corridors" — home-page tiles, in the deck's order (Khunjerab removed 30 Sept 2026). */
 export const homeCorridorTiles = corridors.map((c) => ({
   title: c.title,
   body:
@@ -488,9 +417,7 @@ export const homeCorridorTiles = corridors.map((c) => ({
           ? "India and the Gulf to Central Asia and Russia via Iran and the Caspian."
           : c.slug === "caspian-sea"
             ? "Aktau, Kuryk, Baku/Alat and Turkmenbashi — ro-ro, ferry and heavy-lift vessels."
-            : c.slug === "south-asia-khunjerab"
-              ? "Road link via the Khunjerab Pass to Pakistan ports and project sites."
-              : "Road, rail and ocean connections for equipment from European manufacturers.",
+            : "Road, rail and ocean connections for equipment from European manufacturers.",
   href: c.path,
   icon: c.icon,
 }));

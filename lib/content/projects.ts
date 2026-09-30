@@ -45,7 +45,7 @@ export const caseStudies: CaseStudy[] = [
     summary:
       "Pioneered a multi-country route for oversized oilfield equipment from western Kazakhstan to Pakistan through the China Land Bridge and Khunjerab Pass.",
     sector: "Oil & Gas",
-    corridorSlug: "south-asia-khunjerab",
+    corridorSlug: "china-land-bridge",
     serviceSlugs: ["heavy-haul-over-dimensional-trucking", "project-logistics-heavy-lift"],
     confirmStatus: "Confirm permission & executing entity",
     published: true,

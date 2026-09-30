@@ -403,7 +403,7 @@ export const services: ServicePage[] = [
         heading: "Why Clients Choose Navigator for Heavy Haul",
         columns: 2,
         items: [
-          "Proven OOG route pioneers — our team opened a multi-country route for oversized oilfield equipment from Tengiz to Baluchistan via China.",
+          "Proven OOG route pioneers — our team plans and executes multi-country routes for oversized oilfield, mining and energy equipment from route survey to final delivery.",
           "Engineering-led planning — route surveys, method statements and calculations as standard, not an optional extra.",
           "Single-point accountability — one project manager from factory gate to foundation.",
           "Vetted carrier network across Kazakhstan, Uzbekistan, Kyrgyzstan, Azerbaijan, Georgia and China.",
@@ -418,8 +418,8 @@ export const services: ServicePage[] = [
         body: "Whether you are moving a single transformer to a substation or a series of modules to a refinery, send us your drawings, weights and delivery location. Our heavy haul engineers will confirm feasibility, propose equipment and route options, and provide a transparent quotation.",
         ctas: [
           { label: "Request a Heavy Haul Quote", href: "/request-a-quote?service=HEAVY_HAUL", variant: "gold" },
-          { label: "Call +7 775 662 4455", href: "tel:+77756624455", variant: "onDark" },
-          { label: "WhatsApp", href: "https://wa.me/77756624455", variant: "onDark" },
+          { label: "Call +7 778 662 4455", href: "tel:+77786624455", variant: "onDark" },
+          { label: "WhatsApp", href: "https://wa.me/77786624455", variant: "onDark" },
         ],
       },
       {
@@ -658,7 +658,7 @@ export const services: ServicePage[] = [
         body: "Tell us the product, SDS, volume, frequency and route. Our specialists will recommend the optimal tank solution — ISO tank, flexitank, road tanker or rail wagon — and provide a transparent quotation.",
         ctas: [
           { label: "Request a Bulk Liquid Quote", href: "/request-a-quote?service=BULK_LIQUID", variant: "gold" },
-          { label: "Call +7 775 662 4455", href: "tel:+77756624455", variant: "onDark" },
+          { label: "Call +7 778 662 4455", href: "tel:+77786624455", variant: "onDark" },
         ],
       },
       {
@@ -747,7 +747,6 @@ export const services: ServicePage[] = [
             "India / Gulf → Central Asia (INSTC)",
             "Ocean to Bandar Abbas → rail or road through Iran → Turkmenistan / Kazakhstan / Uzbekistan",
           ],
-          ["Kazakhstan → Pakistan", "Road via China and Khunjerab Pass → Sost → Karachi or project site"],
           ["Urgent spares", "Air to Almaty, Dubai or Istanbul → customs → road to remote site"],
         ],
       },
@@ -881,7 +880,7 @@ export const services: ServicePage[] = [
           "TIR and CMR international transport through Kazakhstan, Uzbekistan, Kyrgyzstan, Russia, the Caucasus, Türkiye and Europe.",
           "Temperature-controlled reefer trucks for pharmaceuticals and perishables.",
           "ADR dangerous goods transport with certified vehicles and drivers.",
-          "China cross-border trucking via Khorgos, Nur Zholy and Bakhty; Pakistan via Khunjerab.",
+          "China cross-border trucking via Khorgos, Nur Zholy and Bakhty.",
           "Heavy and OOG trucking — see Heavy Haul & Over-Dimensional Trucking.",
         ],
       },
@@ -890,7 +889,7 @@ export const services: ServicePage[] = [
       { label: "Heavy Haul & Over-Dimensional Trucking", href: "/services/heavy-haul-over-dimensional-trucking", kind: "service" },
       { label: "Customs & Trade Compliance", href: "/services/customs-trade-compliance", kind: "service" },
       { label: "EPC & Infrastructure", href: "/industries/epc-infrastructure", kind: "industry" },
-      { label: "South Asia (Khunjerab)", href: "/corridors/south-asia-khunjerab", kind: "corridor" },
+      { label: "Europe & Türkiye", href: "/corridors/europe-turkiye", kind: "corridor" },
     ],
   },
 
@@ -1001,7 +1000,7 @@ export const services: ServicePage[] = [
       lead: "Express, consolidated, dangerous-goods and charter air cargo for Central Asia's critical operations.",
       ctas: [
         { label: "Request an Air Quote", href: "/request-a-quote?service=AIR", variant: "gold" },
-        { label: "24/7 Urgent Line", href: "tel:+77756624455", variant: "onDark" },
+        { label: "24/7 Urgent Line", href: "tel:+77786624455", variant: "onDark" },
       ],
     },
     blocks: [

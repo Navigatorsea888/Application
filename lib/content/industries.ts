@@ -133,14 +133,14 @@ export const industries: IndustryPage[] = [
           "OOG route engineering to remote mine sites.",
           "Rail wagon programmes for concentrate and metal exports.",
           "Reagent logistics with dangerous-goods compliance.",
-          "Multi-country routing including China and the Khunjerab corridor to Pakistan.",
+          "Multi-country routing via China, the Caspian and the INSTC to global markets.",
         ],
       },
     ],
     related: [
       { label: "Heavy Haul & Over-Dimensional Trucking", href: "/services/heavy-haul-over-dimensional-trucking", kind: "service" },
       { label: "Rail Freight", href: "/services/rail-freight", kind: "service" },
-      { label: "South Asia (Khunjerab)", href: "/corridors/south-asia-khunjerab", kind: "corridor" },
+      { label: "China Land Bridge", href: "/corridors/china-land-bridge", kind: "corridor" },
     ],
   },
   {

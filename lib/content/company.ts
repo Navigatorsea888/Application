@@ -39,14 +39,14 @@ export const company = {
   descriptionLong:
     "Navigator Sea Land Limited engineers and delivers oversized, heavy-lift, bulk and multimodal cargo between China, the Caspian, the Middle East, South Asia, Europe and every corner of Central Asia — under one contract, one team and one point of accountability.",
 
-  phone: "+7 775 662 4455",
-  phoneHref: "tel:+77756624455",
-  whatsappHref: "https://wa.me/77756624455",
+  phone: "+7 778 662 4455",
+  phoneHref: "tel:+77786624455",
+  whatsappHref: "https://wa.me/77786624455",
   /** Deck: "[24/7 number — CONFIRM]". The main line is used until confirmed. */
-  emergencyPhone: "+7 775 662 4455",
-  emergencyPhoneHref: "tel:+77756624455",
-  /** Deck: "[email — CONFIRM]". */
-  email: "operations@navigatorsealand.com",
+  emergencyPhone: "+7 778 662 4455",
+  emergencyPhoneHref: "tel:+77786624455",
+  /** Deck: "[email — CONFIRM]"; changed to info@ per the 30 Sept 2026 revision. */
+  email: "info@navigatorsealand.com",
 
   headquarters: "Almaty, Republic of Kazakhstan",
   country: "Republic of Kazakhstan",
@@ -66,7 +66,7 @@ export const company = {
 export const departments = [
   { key: "quotes", label: "Quotations", email: "quotes@navigatorsealand.com" },
   { key: "projects", label: "Projects", email: "projects@navigatorsealand.com" },
-  { key: "operations", label: "Operations", email: "operations@navigatorsealand.com" },
+  { key: "info", label: "General enquiries", email: "info@navigatorsealand.com" },
   { key: "careers", label: "Careers", email: "careers@navigatorsealand.com" },
 ] as const;
 
@@ -79,9 +79,9 @@ export const offices = [
     description:
       "Head office. Commercial, project engineering and multimodal operations across the China Land Bridge, the Middle Corridor and Central Asia.",
     address: `${CONFIRM} Full street address, Almaty, Republic of Kazakhstan`,
-    phone: "+7 775 662 4455",
-    phoneHref: "tel:+77756624455",
-    email: "operations@navigatorsealand.com",
+    phone: "+7 778 662 4455",
+    phoneHref: "tel:+77786624455",
+    email: "info@navigatorsealand.com",
     hours: "Mon–Fri 09:00–18:00 (UTC+5)",
     /** Google Maps embed URL — deck asks for a map embed per office. */
     mapEmbedUrl: null as string | null,
@@ -97,7 +97,7 @@ export const offices = [
     address: `${CONFIRM} Full street address, Atyrau, Republic of Kazakhstan`,
     phone: `${CONFIRM} Atyrau office telephone`,
     phoneHref: null as string | null,
-    email: "operations@navigatorsealand.com",
+    email: "info@navigatorsealand.com",
     hours: "Mon–Fri 09:00–18:00 (UTC+5)",
     mapEmbedUrl: null as string | null,
     geo: { lat: 47.094495, lng: 51.923771 },
@@ -123,6 +123,7 @@ export const homeHero = {
   ctas: [
     { label: "Request a Quote", href: "/request-a-quote", variant: "gold" },
     { label: "Explore Our Capabilities", href: "/services", variant: "onDark" },
+    { label: "Track Shipment", href: "/track", variant: "onDark" },
   ] as Cta[],
   image: {
     instruction:
@@ -138,9 +139,9 @@ export const homeHero = {
 };
 
 export const trustStrip = [
-  { title: "Almaty & Atyrau", body: "Own offices in Kazakhstan" },
+  { title: "Kazakhstan", body: "Own offices in Almaty & Atyrau" },
   { title: "20+ Years", body: "Leadership experience in CIS multimodal logistics" },
-  { title: "5 Corridors", body: "China Land Bridge · Middle Corridor · INSTC · Caspian · Khunjerab" },
+  { title: "5 Corridors", body: "China Land Bridge · Middle Corridor · INSTC · Caspian · Europe & Türkiye" },
   { title: "24/7", body: "Operations desk for critical and project cargo" },
 ] as const;
 
@@ -289,7 +290,7 @@ export const about = {
       ],
       [
         "Key gateways",
-        "Khorgos / Altynkol · Dostyk · Aktau · Kuryk · Baku / Alat · Turkmenbashi · Khunjerab / Sost · Bolashak (INSTC rail)",
+        "Khorgos / Altynkol · Dostyk · Aktau · Kuryk · Baku / Alat · Turkmenbashi · Bolashak (INSTC rail)",
       ],
     ] as Array<[string, string]>,
     confirm: "Agent & partner locations — the deck marks this list [CONFIRM list]. Remove any location without an active agent agreement.",
@@ -462,7 +463,7 @@ export const contactHero = {
   lead: "Enquiries go straight to our operations and project teams in Almaty and Atyrau. For a transport quotation, the quote form captures what we need and gets a faster answer.",
   ctas: [
     { label: "Request a Quote", href: "/request-a-quote", variant: "gold" },
-    { label: "Call +7 775 662 4455", href: "tel:+77756624455", variant: "onDark" },
+    { label: "Call +7 778 662 4455", href: "tel:+77786624455", variant: "onDark" },
   ] as Cta[],
 };
 

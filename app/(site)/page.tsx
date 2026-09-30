@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { TrackWidget } from "@/components/track-widget";
 import { Card } from "@/components/ui";
 import { ContentIcon, IconArrowRight } from "@/components/icons";
 import { HeroBanner } from "@/components/site/hero-banner";
@@ -39,7 +38,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <HeroBanner hero={homeHero} size="large" eyebrow="Project Cargo · Heavy Haul · Multimodal" aside={<TrackWidget />} />
+      <HeroBanner hero={homeHero} size="large" eyebrow="Project Cargo · Heavy Haul · Multimodal" />
 
       {/* Trust strip */}
       <section aria-label="At a glance" className="border-b border-ink-200 bg-white">
