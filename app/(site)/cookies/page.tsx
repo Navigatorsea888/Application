@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Alert } from "@/components/ui";
 import { PageHero } from "@/components/site/page-hero";
 import { company } from "@/lib/content";
+import { AnalyticsOptOut } from "@/components/analytics/opt-out";
 
 export const metadata: Metadata = {
   title: "Cookie Policy | Navigator Sea Land Limited",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/cookies" },
 };
 
-const LAST_UPDATED = "24 September 2026";
+const LAST_UPDATED = "2 October 2026";
 
 export default function CookiePolicyPage() {
   return (
@@ -34,7 +35,7 @@ export default function CookiePolicyPage() {
             </Section>
 
             <Section title="2. Cookies we set">
-              <p>The site currently sets only cookies that are strictly necessary for it to work:</p>
+              <p>The site sets one strictly necessary cookie and, on the public pages, first-party analytics storage:</p>
               <div className="overflow-x-auto rounded-lg border border-ink-200">
                 <table className="w-full text-sm">
                   <caption className="sr-only">Cookies set by this website</caption>
@@ -51,13 +52,23 @@ export default function CookiePolicyPage() {
                       <td className="px-4 py-2.5">Keeps staff signed in to the operations panel at /admin. Set only when a member of staff signs in.</td>
                       <td className="px-4 py-2.5">Up to 12 hours</td>
                     </tr>
+                    <tr>
+                      <th scope="row" className="px-4 py-2.5 font-mono text-xs">ph_phc_…_posthog</th>
+                      <td className="px-4 py-2.5">
+                        Product analytics (PostHog). Stores an anonymous visitor identifier and session state so we can count page views and
+                        see which pages lead to a quote request, a phone call or a WhatsApp message. Set as a first-party cookie and in local
+                        storage; events are sent through this website&rsquo;s own domain. We do not record form contents or shipment tracking
+                        results, and URLs are stripped of tracking references and email addresses before they are sent.
+                      </td>
+                      <td className="px-4 py-2.5">Up to 1 year</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
               <p>
-                No advertising, analytics or social-media cookies are set at present. If Google Analytics 4 or conversion tracking is added
-                (the deck plans GA4 with conversion tracking on the quote form, WhatsApp and phone clicks), this table and section 4 must be
-                updated and a consent mechanism added first.
+                No advertising or social-media cookies are set. Analytics is anonymous by default: we do not identify visitors unless they
+                sign in to the staff panel, which is not tracked at all. If session replay or additional marketing tags are ever switched on,
+                this table must be updated and a consent step added first.
               </p>
             </Section>
 
@@ -70,8 +81,12 @@ export default function CookiePolicyPage() {
 
             <Section title="4. Managing cookies">
               <p>
-                You can delete or block cookies through your browser settings. Blocking the strictly necessary cookie will prevent staff from
-                signing in to the operations panel but does not affect the public website, the quote form or shipment tracking.
+                You can switch analytics off for this browser here; the choice is remembered on this device.
+              </p>
+              <AnalyticsOptOut />
+              <p>
+                You can also delete or block cookies through your browser settings. Blocking the strictly necessary cookie will prevent staff
+                from signing in to the operations panel but does not affect the public website, the quote form or shipment tracking.
               </p>
             </Section>
 

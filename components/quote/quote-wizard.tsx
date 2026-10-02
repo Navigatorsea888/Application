@@ -6,6 +6,8 @@ import { Alert, buttonClass } from "../ui";
 import { Checkbox, Field, FormSection, Select, Textarea, TextInput, controlClass } from "../form-fields";
 import { INCOTERMS, LANGUAGES, QUOTE_SERVICE_TYPES } from "@/lib/constants";
 import { formatBytes } from "@/lib/format";
+import { ANALYTICS_EVENTS } from "@/lib/analytics";
+import { track } from "../analytics/posthog-provider";
 
 /* -------------------------------------------------------------------------
    Seven-step "Request a Quote" wizard.
@@ -78,6 +80,17 @@ export function QuoteWizard({ defaultServiceType }: { defaultServiceType?: strin
   const [step, setStep] = useState(0);
   const [dangerousGoods, setDangerousGoods] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  /** What was submitted, for the conversion event once the server confirms. */
+  const submitted = useRef<{ serviceType: string; attachments: number } | null>(null);
+
+  useEffect(() => {
+    if (state.status !== "success") return;
+    track(ANALYTICS_EVENTS.quoteSubmitted, {
+      reference: state.reference ?? null,
+      service_type: submitted.current?.serviceType ?? null,
+      attachments: submitted.current?.attachments ?? 0,
+    });
+  }, [state.status, state.reference]);
 
   const panels = useRef<Array<HTMLDivElement | null>>([]);
   const heading = useRef<HTMLHeadingElement>(null);
@@ -164,6 +177,8 @@ export function QuoteWizard({ defaultServiceType }: { defaultServiceType?: strin
     }
 
     const payload = new FormData(form);
+
+    submitted.current = { serviceType: String(payload.get("serviceType") ?? ""), attachments: payload.getAll("attachments").filter((f) => f instanceof File && f.size > 0).length };
     startTransition(() => formAction(payload));
   }
 
@@ -198,7 +213,7 @@ export function QuoteWizard({ defaultServiceType }: { defaultServiceType?: strin
   const isLast = step === STEPS.length - 1;
 
   return (
-    <form onSubmit={handleSubmit} action={formAction} className="space-y-8" aria-describedby="quote-progress">
+    <form onSubmit={handleSubmit} action={formAction} className="ph-no-capture space-y-8" aria-describedby="quote-progress">
       {/* Honeypot */}
       <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
         <label htmlFor="q-website">Leave this field empty</label>

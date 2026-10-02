@@ -3,6 +3,7 @@ import { SiteFooter } from "@/components/site/site-footer";
 import { MobileActionBar, WhatsAppFloat } from "@/components/site/mobile-action-bar";
 import { JsonLd, organizationJsonLd } from "@/components/site/json-ld";
 import { RevealProvider } from "@/components/reveal";
+import { PostHogProvider } from "@/components/analytics/posthog-provider";
 
 /**
  * Layout for the public marketing site and tracking portal. The admin panel
@@ -24,6 +25,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <MobileActionBar />
       <WhatsAppFloat />
       <RevealProvider />
+      <PostHogProvider />
     </>
   );
 }

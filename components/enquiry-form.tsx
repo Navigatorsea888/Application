@@ -1,16 +1,22 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { submitEnquiry, type EnquiryState } from "@/app/(site)/track/actions";
 import { Alert } from "./ui";
 import { Field, Textarea, TextInput } from "./form-fields";
+import { ANALYTICS_EVENTS } from "@/lib/analytics";
+import { track } from "./analytics/posthog-provider";
 
 const INITIAL: EnquiryState = { status: "idle" };
 
 /** Raised from a tracking result, pre-filled with the Tracking ID. */
 export function EnquiryForm({ trackingRef }: { trackingRef: string }) {
   const [state, action] = useActionState(submitEnquiry, INITIAL);
+
+  useEffect(() => {
+    if (state.status === "success") track(ANALYTICS_EVENTS.trackingEnquirySubmitted);
+  }, [state.status]);
 
   if (state.status === "success") {
     return (
@@ -21,7 +27,7 @@ export function EnquiryForm({ trackingRef }: { trackingRef: string }) {
   }
 
   return (
-    <form action={action} className="space-y-4">
+    <form action={action} className="ph-no-capture space-y-4">
       <input type="hidden" name="trackingRef" value={trackingRef} />
       {/* Honeypot — hidden from people, irresistible to bots. */}
       <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">

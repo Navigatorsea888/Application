@@ -65,7 +65,7 @@ export default async function TrackPage({ searchParams }: PageProps) {
           ) : null}
 
           {result ? (
-            <div className="mt-8">
+            <div className="ph-no-capture mt-8">
               <TrackResult result={result} trackingId={trackingId} />
             </div>
           ) : null}

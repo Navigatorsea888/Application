@@ -133,8 +133,9 @@ in `lib/content/navigation.ts` and add `hreflang` entries in `app/layout.tsx`.
       that limits your liability — the website terms do not.
 - [ ] Complete the bracketed items in the privacy policy: hosting and email
       providers, international transfer mechanism, and retention periods.
-- [ ] Update the cookie policy **before** adding GA4 or any other analytics or
-      marketing tag, and add a consent mechanism first.
+- [ ] The cookie policy now describes the PostHog analytics storage. Confirm with
+      counsel whether an up-front consent banner is required for your visitor
+      base (EU visitors in particular); an opt-out control is on the policy page.
 - [ ] Remove the yellow "Review required before publication" banners once counsel
       has signed off.
 
@@ -171,8 +172,12 @@ in `lib/content/navigation.ts` and add `hreflang` entries in `app/layout.tsx`.
 - [ ] Point a domain at the deployment and verify the TLS certificate.
 - [ ] Submit `/sitemap.xml` to Google Search Console. Old URLs (`/about`,
       `/quote`, `/locations`) redirect permanently to the new ones.
-- [ ] Add GA4 with conversion events on the quote form submission, WhatsApp and
-      phone clicks (deck 11.2) — after the cookie policy and consent step above.
+- [ ] Analytics: PostHog is wired in (deck 11.2 asked for GA4 with the same
+      conversion events). Set `NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST`
+      in the production environment; events are `quote_request_submitted`,
+      `contact_form_submitted`, `tracking_enquiry_submitted`, `phone_click`,
+      `whatsapp_click`, `email_click`. Build the conversion funnel in PostHog from
+      `$pageview` → `quote_request_submitted`.
 - [ ] Replace the drawn wordmark in `components/logo.tsx` with the official brand
       artwork, and `app/icon.svg` / `app/apple-icon.svg` with the real favicon.
 
@@ -190,7 +195,7 @@ in `lib/content/navigation.ts` and add `hreflang` entries in `app/layout.tsx`.
 
 ```bash
 npm run typecheck     # no type errors
-npm test              # 76 tests pass
+npm test              # 84 tests pass
 npm run db:check-rls  # every table protected, no anon grants
 npm run build         # production build succeeds, 44 routes
 ```

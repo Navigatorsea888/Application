@@ -1,15 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { submitContact, type FormState } from "@/app/(site)/request-a-quote/actions";
 import { Alert } from "./ui";
 import { Field, Textarea, TextInput } from "./form-fields";
+import { ANALYTICS_EVENTS } from "@/lib/analytics";
+import { track } from "./analytics/posthog-provider";
 
 const INITIAL: FormState = { status: "idle" };
 
 export function ContactForm() {
   const [state, action] = useActionState(submitContact, INITIAL);
+
+  useEffect(() => {
+    if (state.status === "success") track(ANALYTICS_EVENTS.contactSubmitted);
+  }, [state.status]);
 
   if (state.status === "success") {
     return (
@@ -20,7 +26,7 @@ export function ContactForm() {
   }
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="ph-no-capture space-y-5">
       <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
         <label htmlFor="c-website">Leave this field empty</label>
         <input id="c-website" name="website" type="text" tabIndex={-1} autoComplete="off" />

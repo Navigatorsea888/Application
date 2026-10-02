@@ -22,7 +22,7 @@ export default function ContactPage() {
     <>
       <HeroBanner hero={contactHero} crumbs={[{ label: "Contact", href: "/contact" }]} eyebrow="Contact" />
 
-      <Band alt={false} id="message">
+      <Band alt={false} id="send-a-message">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
           <Card className="p-6 sm:p-8">
             <h2 className="text-xl sm:text-2xl">Send Us a Message</h2>

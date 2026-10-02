@@ -80,7 +80,7 @@ repository.
 | `npm run dev` | Development server |
 | `npm run build` | Production build (runs `prisma generate` first) |
 | `npm start` | Serve the production build |
-| `npm test` | Test suite — 76 tests over access control, timeline, uploads, tools and validation |
+| `npm test` | Test suite — 84 tests over access control, timeline, uploads, tools and validation |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run setup` | Generate client, run migrations, seed |
 | `npm run db:migrate` | Apply pending migrations (`prisma migrate deploy`) |
@@ -106,6 +106,7 @@ app/
   api/admin/export Excel endpoints
   api/files        Serves checkpoint and quote attachments with access checks
 components/
+  analytics/       PostHog provider (page views, conversion clicks) and opt-out
   site/            Header (mega-menu), footer, hero banner, section renderer,
                    corridor map, FAQ, breadcrumbs, JSON-LD, review notes
   quote/           Seven-step quote wizard
@@ -121,10 +122,24 @@ lib/
   validation.ts    Zod schemas for every form
   uploads.ts       Attachment validation and storage keys (checkpoints and quotes)
   notifications/   Channel interface + email / WhatsApp / SMS adapters
+  analytics.ts     PostHog event names, URL redaction, click classification
 prisma/            Schema, migrations and seed
 tests/             Test suite
 docs/              Go-live checklist, operations guide, design specs
 ```
+
+### Analytics
+
+PostHog runs on the public site only (never on `/admin`). Set
+`NEXT_PUBLIC_POSTHOG_KEY` and `NEXT_PUBLIC_POSTHOG_HOST`; leave the key empty to
+switch analytics off. Requests are proxied through `/ingest` on this origin
+(`next.config.ts` rewrites), page views are captured on every route change, and
+the conversion events the deck asks for are `quote_request_submitted`,
+`contact_form_submitted`, `tracking_enquiry_submitted`, `phone_click`,
+`whatsapp_click` and `email_click` (`lib/analytics.ts`). Every URL-shaped
+property is redacted before it leaves the browser, so the tracking portal's
+consignee email and Tracking ID never reach PostHog, and forms and tracking
+results carry `ph-no-capture`. Visitors can opt out on `/cookies`.
 
 ### Site content and the `[CONFIRM]` convention
 

@@ -2,7 +2,7 @@
   "name": "navigator-sea-land",
   "version": "1.0.0",
   "private": true,
-  "description": "Navigator Sea Land Limited \u2014 corporate website, shipment tracking portal and operations admin panel.",
+  "description": "Navigator Sea Land Limited — corporate website, shipment tracking portal and operations admin panel.",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
@@ -30,6 +30,7 @@
     "jose": "^5.9.6",
     "next": "^15.1.3",
     "nodemailer": "^6.9.16",
+    "posthog-js": "^1.435.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "server-only": "^0.0.1",
